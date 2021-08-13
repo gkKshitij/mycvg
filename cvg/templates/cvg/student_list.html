@@ -1,0 +1,23 @@
+{% extends 'cvg/base.html' %}
+
+{% block content %}
+<div class="content container">
+    <div class="row">
+        <div class="col-md-8">
+        {% for student in students %}
+        <div>
+            <div class='date'>
+                <p>Published: {{student.published_date}}</p>
+            </div>
+            <h2><a href="{% url 'cvg:student_detail' pk=student.pk %}">{{student.title}}</a></h2>
+            <p>{{student.text }}</p>
+        </div>
+        </div>
+        <br>
+        {% endfor %}
+    </div>
+</div>
+
+</body>
+</html>
+{% endblock %}
