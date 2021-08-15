@@ -8,15 +8,23 @@ from .models import Student, Comment
 from .forms import Studentform, Commentform, UserForm
 
 # Create your views here.
+def home(request, pk):
+    students = get_object_or_404(Student, pk=pk)
+    context = {'students': students}
+    return render(request, 'cvg/home.html', context)
+
+
 def student_list(request):
     students=Student.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     context = {'students': students}
     return render(request, 'cvg/student_list.html', context)
 
+
 def student_detail(request, pk):
     student = get_object_or_404(Student, pk=pk)
     context = {'student': student}
     return render(request, 'cvg/student_detail.html',context)
+
 
 @login_required
 def student_new(request):
@@ -32,6 +40,7 @@ def student_new(request):
         form = Studentform()
         context = {'form':form}
     return render(request, 'cvg/student_edit.html', context) 
+
 
 @login_required
 def student_edit(request, pk):
@@ -49,17 +58,20 @@ def student_edit(request, pk):
         context = {'form':form}
     return render(request, 'cvg/student_edit.html', context)
 
+
 @login_required
 def student_draft_list(request):
     students=Student.objects.filter(published_date__isnull=True).order_by('-created_date')
     context = {'students':students}
     return render(request, 'cvg/student_draft_list.html', context)
 
+
 @login_required
 def student_publish(request, pk):
     student=get_object_or_404(Student, pk=pk)
     student.published()
     return redirect('cvg:student_detail', pk=pk)
+
 
 @login_required
 def add_comment_to_student(request, pk):
@@ -76,11 +88,13 @@ def add_comment_to_student(request, pk):
         form = Commentform()
         return render(request, 'cvg/addcomment.html', {'form':form})
 
+
 @login_required
 def remove_comment(request, pk):
     comment=get_object_or_404(Comment, pk=pk)
     comment.delete()
     return redirect('cvg:student_detail', pk=comment.student.pk)
+
 
 @login_required
 def comment_approve(request, pk):
@@ -88,12 +102,14 @@ def comment_approve(request, pk):
     comment.approve()
     return redirect('cvg:student_detail', pk=comment.student.pk)
 
+
 @login_required
 def delete_student(request, pk):
     student = get_object_or_404(Student, pk=pk)
     student.delete()
     # context = {'students': students}
     return redirect('cvg:student_list')
+
 
 def signup(request):
     if request.user.is_authenticated:
