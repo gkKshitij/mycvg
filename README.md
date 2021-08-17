@@ -1,2 +1,2 @@
 # mycvg
-cvgenrator refactoring from mysitecp
+cvgenrator refactoring from mycvg

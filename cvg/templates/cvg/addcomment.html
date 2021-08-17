@@ -1,0 +1,15 @@
+{% extends 'cvg/base.html' %}
+{% block title %}
+Adding comment!
+{% endblock %}
+
+{% block content %}
+<div class="comment">
+    <h2>New Comment</h2>
+    <form class="cv-form-blog" method="cv">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Cv Comment</button>
+    </form>
+</div>
+{% endblock %}

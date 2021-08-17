@@ -2,7 +2,7 @@
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>>{% endif %}
 
-<form method="post" action="{% url 'polls:vote' question.id %}">
+<form method="cv" action="{% url 'polls:vote' question.id %}">
     {% csrf_token %}
     {% for choice in question.choice_set.all %}
         <input type="radio" name="choice" id="choice{{ forloop.counter}}" value="{{ choice.id }}">
@@ -13,7 +13,7 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
 
-<form action="{% url 'polls:vote' question.id %}" method="post">
+<form action="{% url 'polls:vote' question.id %}" method="cv">
     {% csrf_token %}
     <fieldset>
         <legend><h1>{{ question.question_text }}</h1></legend>

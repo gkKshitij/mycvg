@@ -1,0 +1,49 @@
+{% extends 'cvg/base.html' %}
+
+
+{% block title %}{{cv.title}}{% endblock %}
+{% block content %}
+
+    <div>
+        {% if cv.published_date %}
+        <div>
+            {{cv.published_date}}
+        </div>
+        {% else %}
+            <a href="{% url 'cvg:cv_publish' pk=cv.pk %}" class="btn btn-primary">Publish</a>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+        <a href="{% url 'cvg:cv_edit' pk=cv.pk %}"><i class="fa fa-edit fa-4x"></i></a>
+        <a href="{% url 'cvg:delete_cv' pk=cv.pk %}" class="btn btn-danger" 
+        onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></a>
+        {% endif %}
+
+        <h1>{{cv.title}}</h1>
+        <p>{{ cv.text }}</p>
+    </div>
+
+    <hr> 
+
+    <a href="{% url 'cvg:add_comment' pk=cv.pk %}" class="btn btn-secondary">Add Comment</a>
+    <br>
+
+    {% for comment in cv.comments.all %}
+    {% if user.is_authenticated or comment.approved %}
+        <div class="">
+
+        {% if not comment.approved and user.is_superuser %}
+        <a href="{% url 'cvg:approve_comment' pk=comment.pk %}" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i></a>
+        <a href="{% url 'cvg:remove_comment' pk=comment.pk %}" class="btn"><i class="fa fa-trash" aria-hidden="true"></i></a>
+        {% endif %}
+            <strong>{{comment.author}}</strong>
+            <p>{{comment.text }}</p>
+            {% endif %}
+            {% empty %}
+
+        </div>
+    <p>No comments yet..</p>
+    
+    {% endfor %}
+    
+{% endblock %}
