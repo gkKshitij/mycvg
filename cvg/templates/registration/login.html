@@ -12,7 +12,7 @@
     {% else %}
 
     <h2>login</h2>
-    <form method="cv">
+    <form method="POST">
         {% csrf_token %}
         {{form.as_p}}
         <button type="submit" class="btn btn-primary">Login</button>
