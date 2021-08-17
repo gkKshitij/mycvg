@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container pads">
 <h1> New Cv</h1>
-    <form method="cv" action="" class="cv-form-blog">
+    <form method="POST" action="" class="cv-form-blog">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Submit</button>
