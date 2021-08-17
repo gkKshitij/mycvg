@@ -1,5 +1,4 @@
 {% extends 'blogs/base.html' %}
-{% load markdownify %}
 
 
 {% block title %}{{post.title}}{% endblock %}
@@ -21,7 +20,7 @@
         {% endif %}
 
         <h1>{{post.title}}</h1>
-        <p>{{ post.text | markdown | safe }}</p>
+        <p>{{ post.text }}</p>
     </div>
 
     <hr> 
@@ -38,7 +37,7 @@
         <a href="{% url 'blogs:remove_comment' pk=comment.pk %}" class="btn"><i class="fa fa-trash" aria-hidden="true"></i></a>
         {% endif %}
             <strong>{{comment.author}}</strong>
-            <p>{{comment.text | markdown | safe }}</p>
+            <p>{{comment.text }}</p>
             {% endif %}
             {% empty %}
 
