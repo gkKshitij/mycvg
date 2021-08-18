@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login
 
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from .models import Cv, Comment
 from .forms import Cvform, Commentform, UserForm
 
@@ -24,7 +27,8 @@ def cv_new(request):
         form = Cvform(request.POST)
         if form.is_valid():
             cv = form.save(commit=False)
-            cv.author=request.user
+            cv.sap_id=int(str(request.user))
+            cv.created_by=request.user
             cv.published_date=timezone.now()
             cv.save()
             return redirect('cvg:cv_detail', pk=cv.pk)
@@ -33,6 +37,17 @@ def cv_new(request):
         context = {'form':form}
     return render(request, 'cvg/cv_edit.html', context) 
 
+
+# class Cv_new(LoginRequiredMixin, CreateView):
+#     # fields = '__all__'
+#     model = Cv
+#     form_class = Cvform
+#     template_name = 'cvg/cv_edit.html'
+#     def form_valid(self, form):
+#         form.instance.created_by=self.request.user
+#         return super().form_valid(form)
+    
+    
 @login_required
 def cv_edit(request, pk):
     cv=get_object_or_404(Cv, pk=pk)
@@ -40,7 +55,7 @@ def cv_edit(request, pk):
         form = Cvform(request.POST, instance=cv)
         if form.is_valid():
             cv = form.save(commit=False)
-            cv.author = request.user
+            cv.edited_by = str(request.user)
             cv.published_date=timezone.now()
             cv.save()
             return redirect('cvg:cv_detail', pk=cv.pk)
@@ -48,6 +63,16 @@ def cv_edit(request, pk):
         form = Cvform(instance=cv)
         context = {'form':form}
     return render(request, 'cvg/cv_edit.html', context)
+
+# class Cv_edit(LoginRequiredMixin, UpdateView):
+#     # fields = '__all__'
+#     model = Cv
+#     form_class = Cvform
+#     template_name = 'cvg/cv_edit.html'
+#     def form_valid(self, form):
+#         form.instance.created_by=self.request.user
+#         return super().form_valid(form)
+
 
 @login_required
 def cv_draft_list(request):

@@ -1,13 +1,17 @@
 {% extends 'cvg/base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <div class="container pads">
-<h1> New Cv</h1>
-    <form method="POST" action="" class="cv-form-blog">
+<h1> Please eneter your details accordingly.</h1>
+
+    <div class="input-group mb-3">
+    <form method="POST" action="" class="cv-form-blog ">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form|crispy }}
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    </div>
 </div>
 
 {% endblock %}

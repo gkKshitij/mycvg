@@ -11,12 +11,17 @@ from crispy_forms.layout import Submit#, Layout, Field
 class Cvform(forms.ModelForm):
     class Meta:
         model = Cv
-        fields = ('title','text')
+        exclude=('published_date','created_by','edited_by','sap_id')
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class':'forms-control input-group-text', 'placeholder': 'Kshitij' }),
+        }
+        
 
 class Commentform(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('text',)
+     
         
 class UserForm(forms.ModelForm):
     password=forms.CharField(widget=forms.PasswordInput)

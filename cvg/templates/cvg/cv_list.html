@@ -9,7 +9,7 @@
             <div class='date'>
                 <p>Published: {{cv.published_date}}</p>
             </div>
-            <h2><a href="{% url 'cvg:cv_detail' pk=cv.pk %}">{{cv.title}}</a></h2>
+            <h2><a href="{% url 'cvg:cv_detail' pk=cv.pk %}">{{cv.sap_id}}</a></h2>
             <p>{{cv.text }}</p>
         </div>
         </div>

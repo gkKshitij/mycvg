@@ -1,13 +1,19 @@
 from django.urls import path
 from . import views
+# from cvg.views import Cv_edit
 
 app_name = 'cvg'
 
 urlpatterns = [
     path('', views.cv_list, name='cv_list'),
     path('cv/<int:pk>/', views.cv_detail, name='cv_detail'),
+    
+    # path('cv/<int:pk>/edit/', Cv_new.as_view(), name='cv_new'),
     path('cv/new/', views.cv_new, name='cv_new'),
+    
+    # path('cv/<int:pk>/edit/', Cv_edit.as_view(), name='cv_edit'),
     path('cv/<int:pk>/edit/', views.cv_edit, name='cv_edit'),
+    
     path('cv/<int:pk>/delete/', views.delete_cv, name='delete_cv'),
     path('draft/', views.cv_draft_list, name='cv_draft_list'),
     path('cv/<int:pk>/publish/', views.cv_publish, name='cv_publish'),
