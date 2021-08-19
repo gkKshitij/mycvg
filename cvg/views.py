@@ -77,7 +77,7 @@ def cv_new(request):
                 # TODO: make this later          
     else:
         form = Cvform()
-    return render(request, 'cvg/cv_edit.html', {'form': form})
+    return render(request, 'cvg/form.html', {'form': form})
 
 
 @login_required
@@ -112,8 +112,7 @@ def cv_edit(request, pk):
             return redirect('cvg:cv_detail', pk=cv.pk)
     else:
         form = Cvform(instance=cv)
-        context = {'form': form}
-    return render(request, 'cvg/cv_edit.html', context)
+    return render(request, 'cvg/form.html', {'form': form})
 
 
 ## generic form of above view
@@ -140,7 +139,7 @@ def add_ad_to_cv(request, pk):
             return redirect('cvg:cv_detail', pk=cv.pk)
     else:
         form = Academicsform()
-    return render(request, 'cvg/ad.html', {'form': form})
+    return render(request, 'cvg/form.html', {'form': form})
 
 
 @login_required
@@ -154,7 +153,7 @@ def edit_ad(request, pk):
             return redirect('cvg:cv_detail', pk=ad.cv.pk)
     else:
         form = Academicsform(instance=ad)
-    return render(request, 'cvg/ad.html', {'form': form})
+    return render(request, 'cvg/form.html', {'form': form})
 
 
 @login_required
