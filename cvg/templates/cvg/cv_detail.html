@@ -21,7 +21,8 @@
         {% endif %}
         
         <div class="container">
-          <h3> Basic Details </h3>
+          <h3> Basic Details </h3><p>Last updated on : <strong>{{cv.published_date}}</strong></p>
+
           <table style="width:80%">
             <tr>
               <th>Fields</th>
@@ -80,10 +81,9 @@
         <p>{{ cv.text }}</p>
     </div>
 
+    <br>
     
-    
-    <hr> 
-
+    <hr>
     
     <br>
 
@@ -96,10 +96,11 @@
             
         {% if ad.approved and user.is_superuser %}
         <a href="{% url 'cvg:unapprove_ad' pk=ad.pk %}" class="btn btn-primary"><i class="fa fa-times" aria-hidden="true"></i></a>
-        <strong>{{ad.created_date}}</strong>
+
         {% endif %}
-      {% endif %}  
-      <h3> Academic Details </h3>
+      {% endif %}
+      <div class="container">
+      <h2> Academic Details </h2><p>Last updated on : <strong>{{ad.created_date}}</strong></p>
           <table style="width:80%">
             <tr>
               <th>Fields</th>
@@ -129,7 +130,7 @@
           </table>
 
             {% empty %}
-
+      </div>
         </div>
 
     <a href="{% url 'cvg:add_ad' pk=cv.pk %}" class="btn btn-secondary">Add Academic Details</a>
