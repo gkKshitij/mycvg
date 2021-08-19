@@ -4,18 +4,40 @@
 {% block title %}{{cv.title}}{% endblock %}
 {% block content %}
 
-    <div class="container">
+{#    temporary jugad as css was not working dont know y#}
+<style>
+            table,
+            th,
+            td {
+                border: 0px solid black;
+                border-collapse: collapse;
+            }
+
+            table {
+                width: 80%;
+            }
+
+            td:nth-child(1) {
+                width: 20%;
+            }
+
+            td:nth-child(2) {
+                width: 60%;
+            }
+</style>
+
+    <div class="kontainer">
 
         {% if user.is_authenticated and request.user == cv.created_by or user.is_superuser %}
-        <a href="{% url 'cvg:cv_edit' pk=cv.pk %}"><i class="fa fa-edit fa-4x"></i></a>
+        <a href="{% url 'cvg:cv_edit' pk=cv.pk %}" class="btn btn-primary"><i class="fa fa-pencil fa-2x"></i></a>
         <a href="{% url 'cvg:delete_cv' pk=cv.pk %}" class="btn btn-danger" 
         onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></a>
         {% endif %}
         
-        <div class="container">
+        <div class="kontainer">
           <h3> Basic Details </h3><p>Last updated on : <strong>{{cv.modified_date}}</strong></p>
 
-          <table style="width:80%">
+          <table style="">
             <tr>
               <th>Fields</th>
               <th>Values</th> 
@@ -69,8 +91,6 @@
 
         </div>
 
-        <p>{{cv.title}}</p>
-        <p>{{ cv.text }}</p>
     </div>
 
     <br>
@@ -79,21 +99,22 @@
     
     <br>
 
+    {#    academics section #}
     {% for ad in cv.academics.all %}
-      <div class="container">
+      <div class="kontainer">
     {% if request.user == ad.cv.created_by or user.is_superuser %} 
 
-            <a href="{% url 'cvg:edit_ad' pk=ad.pk %}"><i class="fa fa-edit fa-4x"></i></a>
+            <a href="{% url 'cvg:edit_ad' pk=ad.pk %}" class="btn btn-primary"><i class="fa fa-pencil fa-2x"></i></a>
             <a href="{% url 'cvg:remove_ad' pk=ad.pk %}" class="btn btn-danger"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>
             
         {% if ad.approved and user.is_superuser %}
-        <a href="{% url 'cvg:unapprove_ad' pk=ad.pk %}" class="btn btn-primary"><i class="fa fa-times" aria-hidden="true"></i></a>
+        <a href="{% url 'cvg:unapprove_ad' pk=ad.pk %}" class="btn btn-primary"><i class="fa fa-times fa-2x" aria-hidden="true"></i></a>
 
         {% endif %}
       {% endif %}
-      <div class="container">
-      <h2> Academic Details </h2><p>Last updated on : <strong>{{ad.created_date}}</strong></p>
-          <table style="width:80%">
+      <div class="kontainer">
+      <h2> Academic Details </h2><p>Last updated on : <strong>{{ad.modified_date}}</strong></p>
+          <table style="">
             <tr>
               <th>Fields</th>
               <th>Values</th> 
@@ -123,17 +144,317 @@
 
             {% empty %}
       </div>
-        </div>
+      </div>
 
-        <div class="container">
+        <div class="kontainer">
             <a href="{% url 'cvg:add_ad' pk=cv.pk %}" class="btn btn-secondary">Add Academic Details</a>
             <p></p>
         </div>
     
     {% endfor %}
-    
-    
-    
+
+{# skills section #}
+    <div class="kontainer">
+    <br>
+
+    <hr>
+
+    <br>
+    {% for sd in cv.skills.all %}
+      <div class="kontainer">
+    {% if request.user == sd.cv.created_by or user.is_superuser %}
+
+            <a href="{% url 'cvg:edit_sd' pk=sd.pk %}" class="btn btn-primary"><i class="fa fa-pencil fa-2x"></i></a>
+            <a href="{% url 'cvg:remove_sd' pk=sd.pk %}" class="btn btn-danger"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>
+
+        {% if sd.approved and user.is_superuser %}
+        <a href="{% url 'cvg:unapprove_sd' pk=sd.pk %}" class="btn btn-primary"><i class="fa fa-times fa-2x" aria-hidden="true"></i></a>
+
+        {% endif %}
+      {% endif %}
+      <div class="kontainer">
+      <h2> Skills </h2><p>Last updated on : <strong>{{sd.modified_date}}</strong></p>
+          <table style="">
+            <tr>
+              <th>Fields</th>
+              <th>Values</th>
+            </tr>
+            <tr>
+            <tr>
+              <td>Programming Languages known:</th>
+              <td>{{sd.programming_languages }}</td>
+            </tr>
+            <tr>
+              <td>Tolls Familiar with:</td>
+              <td>{{sd.tools_familiar_with }}</td>
+            </tr>
+            <tr>
+              <td>Core Skills:</td>
+              <td>{{sd.core_skills }}</td>
+            </tr>
+          </table>
+
+            {% empty %}
+      </div>
+      </div>
+
+    <div class="kontainer">
+            <a href="{% url 'cvg:add_sd' pk=cv.pk %}" class="btn btn-secondary">Add Skill</a>
+            <p></p>
+    </div>
+    {% endfor %}
+
+
+    </div>
+
+
+{#    Extra curricular #}
+    <div class="kontainer">
+    <br>
+
+    <hr>
+
+    <br>
+    {% for ed in cv.extracurricular.all %}
+      <div class="kontainer">
+    {% if request.user == ed.cv.created_by or user.is_superuser %}
+
+            <a href="{% url 'cvg:edit_ed' pk=ed.pk %}" class="btn btn-primary"><i class="fa fa-pencil fa-2x"></i></a>
+            <a href="{% url 'cvg:remove_ed' pk=ed.pk %}" class="btn btn-danger"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>
+
+        {% if ed.approved and user.is_superuser %}
+        <a href="{% url 'cvg:unapprove_ed' pk=ed.pk %}" class="btn btn-primary"><i class="fa fa-times fa-2x" aria-hidden="true"></i></a>
+
+        {% endif %}
+      {% endif %}
+      <div class="kontainer">
+      <h2> Extracurriculars </h2><p>Last updated on : <strong>{{ed.modified_date}}</strong></p>
+          <table style="">
+            <tr>
+              <th>Fields</th>
+              <th>Values</th>
+            </tr>
+            <tr>
+            <tr>
+              <td>Hobbies:</th>
+              <td>{{ed.hobbies }}</td>
+            </tr>
+            <tr>
+              <td>Certificates:</td>
+              <td>{{ed.certificates }}</td>
+            </tr>
+          </table>
+
+
+            {% empty %}
+      </div>
+      </div>
+
+    <div class="kontainer">
+            <a href="{% url 'cvg:add_ed' pk=cv.pk %}" class="btn btn-secondary">Add Extracurricular Activities</a>
+            <p></p>
+    </div>
+    {% endfor %}
+
+
+    </div>
+
+
+{#    Internship section #}
+<div class="kontainer">
+    <br>
+
+    <hr>
+
+    <br>
+    <h2> Internships </h2>
+    {% for ind in cv.internships.all %}
+      <div class="kontainer">
+    {% if request.user == ind.cv.created_by or user.is_superuser %}
+
+            <a href="{% url 'cvg:edit_ind' pk=ind.pk %}" class="btn btn-primary"><i class="fa fa-pencil fa-2x"></i></a>
+            <a href="{% url 'cvg:remove_ind' pk=ind.pk %}" class="btn btn-danger"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>
+
+        {% if ind.approved and user.is_superuser %}
+        <a href="{% url 'cvg:unapprove_ind' pk=ind.pk %}" class="btn btn-primary"><i class="fa fa-times fa-2x" aria-hidden="true"></i></a>
+
+        {% endif %}
+      {% endif %}
+      <div class="kontainer">
+      <p>Last updated on : <strong>{{ind.modified_date}}</strong></p>
+          <table style="">
+            <tr>
+              <th>Fields</th>
+              <th>Values</th>
+            </tr>
+            <tr>
+            <tr>
+              <td>Organization:</th>
+              <td>{{ind.organization }}</td>
+            </tr>
+            <tr>
+              <td>Role:</td>
+              <td>{{ind.role }}</td>
+            </tr>
+            <tr>
+              <td>Start date:</td>
+              <td>{{ind.start_month }} {{ind.start_year }}</td>
+            </tr>
+            <tr>
+              <td>End date:</td>
+              <td>{{ind.end_month }} {{ind.end_year }}</td>
+            </tr>
+            <tr>
+              <td>Description:</td>
+              <td>{{ind.description }}</td>
+            </tr>
+          </table>
+          <br>
+          <br>
+            {% empty %}
+      </div>
+      </div>
+
+    {% endfor %}
+    <div class="kontainer">
+            <a href="{% url 'cvg:add_ind' pk=cv.pk %}" class="btn btn-secondary">Add Internship</a>
+            <p></p>
+    </div>
+
+    </div>
+
+
+{#    Project section #}
+<div class="kontainer">
+    <br>
+
+    <hr>
+
+    <br>
+    <h2> Projects </h2>
+    {% for pd in cv.projects.all %}
+      <div class="kontainer">
+    {% if request.user == pd.cv.created_by or user.is_superuser %}
+
+            <a href="{% url 'cvg:edit_pd' pk=pd.pk %}" class="btn btn-primary"><i class="fa fa-pencil fa-2x"></i></a>
+            <a href="{% url 'cvg:remove_pd' pk=pd.pk %}" class="btn btn-danger"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>
+
+        {% if pd.approved and user.is_superuser %}
+        <a href="{% url 'cvg:unapprove_pd' pk=pd.pk %}" class="btn btn-primary"><i class="fa fa-times fa-2x" aria-hidden="true"></i></a>
+
+        {% endif %}
+      {% endif %}
+      <div class="kontainer">
+      <p>Last updated on : <strong>{{pd.modified_date}}</strong></p>
+          <table style="">
+            <tr>
+              <th>Fields</th>
+              <th>Values</th>
+            </tr>
+            <tr>
+            <tr>
+              <td>Name:</th>
+              <td>{{pd.name }}</td>
+            </tr>
+            <tr>
+              <td>Tools and technologies used:</td>
+              <td>{{pd.tools_and_tech }}</td>
+            </tr>
+            <tr>
+              <td>Start date:</td>
+              <td>{{pd.start_month }} {{pd.start_year }}</td>
+            </tr>
+            <tr>
+              <td>End date:</td>
+              <td>{{pd.end_month }} {{pd.end_year }}</td>
+            </tr>
+            <tr>
+              <td>Description:</td>
+              <td>{{pd.description }}</td>
+            </tr>
+          </table>
+          <br>
+          <br>
+
+            {% empty %}
+      </div>
+      </div>
+
+    {% endfor %}
+    <div class="kontainer">
+            <a href="{% url 'cvg:add_pd' pk=cv.pk %}" class="btn btn-secondary">Add Project</a>
+            <p></p>
+    </div>
+
+    </div>
+
+
+{#    Roles section #}
+<div class="kontainer">
+    <br>
+
+    <hr>
+
+    <br>
+    <h2> Roles </h2>
+    {% for rd in cv.roles.all %}
+      <div class="kontainer">
+    {% if request.user == rd.cv.created_by or user.is_superuser %}
+
+            <a href="{% url 'cvg:edit_rd' pk=rd.pk %}" class="btn btn-primary"><i class="fa fa-pencil fa-2x"></i></a>
+            <a href="{% url 'cvg:remove_rd' pk=rd.pk %}" class="btn btn-danger"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>
+
+        {% if rd.approved and user.is_superuser %}
+        <a href="{% url 'cvg:unapprove_rd' pk=rd.pk %}" class="btn btn-primary"><i class="fa fa-times fa-2x" aria-hidden="true"></i></a>
+
+        {% endif %}
+      {% endif %}
+      <div class="kontainer">
+      <p>Last updated on : <strong>{{rd.modified_date}}</strong></p>
+          <table style="">
+            <tr>
+              <th>Fields</th>
+              <th>Values</th>
+            </tr>
+            <tr>
+            <tr>
+              <td>Organization:</th>
+              <td>{{rd.organization }}</td>
+            </tr>
+            <tr>
+              <td>Role:</td>
+              <td>{{rd.role }}</td>
+            </tr>
+            <tr>
+              <td>Start date:</td>
+              <td>{{rd.start_month }} {{rd.start_year }}</td>
+            </tr>
+            <tr>
+              <td>End date:</td>
+              <td>{{rd.end_month }} {{rd.end_year }}</td>
+            </tr>
+            <tr>
+              <td>Description:</td>
+              <td>{{rd.description }}</td>
+            </tr>
+          </table>
+          <br>
+          <br>
+            {% empty %}
+      </div>
+      </div>
+
+    {% endfor %}
+    <div class="kontainer">
+            <a href="{% url 'cvg:add_rd' pk=cv.pk %}" class="btn btn-secondary">Add Role</a>
+            <p></p>
+    </div>
+
+    </div>
+
+
+
+{#    comments section #}
     <!-- <hr> 
 
     <a href="{% url 'cvg:add_comment' pk=cv.pk %}" class="btn btn-secondary">Add A comment</a>

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Academics, Cv, Comment
+from .models import Academics, Cv, Comment, Skills, Projects, Internships, Extracurricular, Roles
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit  # , Layout, Field
@@ -34,7 +34,37 @@ class Cvform(forms.ModelForm):
 class Academicsform(forms.ModelForm):
     class Meta:
         model = Academics
-        exclude = ('cv', 'created_date', 'approved', 'edited_by', 'modified_date')
+        exclude = ('cv', 'approved', 'edited_by', 'modified_date')
+
+
+class Skillsform(forms.ModelForm):
+    class Meta:
+        model = Skills
+        exclude = ('cv', 'approved', 'edited_by', 'modified_date')
+
+
+class Extracurricularform(forms.ModelForm):
+    class Meta:
+        model = Extracurricular
+        exclude = ('cv', 'approved', 'edited_by', 'modified_date')
+
+
+class Internshipsform(forms.ModelForm):
+    class Meta:
+        model = Internships
+        exclude = ('cv', 'approved', 'edited_by', 'modified_date')
+
+
+class Projectsform(forms.ModelForm):
+    class Meta:
+        model = Projects
+        exclude = ('cv', 'approved', 'edited_by', 'modified_date')
+
+
+class Rolesform(forms.ModelForm):
+    class Meta:
+        model = Roles
+        exclude = ('cv', 'approved', 'edited_by', 'modified_date')
 
 
 class Commentform(forms.ModelForm):

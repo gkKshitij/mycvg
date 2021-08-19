@@ -8,8 +8,9 @@ from django.contrib.auth import login
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Academics, Cv, Comment
-from .forms import Cvform, Commentform, UserForm, Academicsform
+from .models import Academics, Cv, Comment, Skills, Extracurricular, Internships, Projects, Roles
+from .forms import Cvform, Commentform, UserForm, Academicsform, Skillsform, Extracurricularform, Internshipsform, \
+    Projectsform, Rolesform
 
 
 # Create your views here.
@@ -216,6 +217,246 @@ def unapprove_ad(request, pk):
     ad = get_object_or_404(Academics, pk=pk)
     ad.unapprove()
     return redirect('cvg:cv_detail', pk=ad.cv.pk)
+
+
+# skills section
+@login_required
+def add_sd_to_cv(request, pk):
+    cv = get_object_or_404(Cv, pk=pk)
+    if request.method == 'POST':
+        form = Skillsform(request.POST)
+        if form.is_valid():
+            sd = form.save(commit=False)
+            sd.edited_by = str(request.user)
+            sd.modified_date = timezone.now()
+            sd.cv = cv
+            sd.save()
+            return redirect('cvg:cv_detail', pk=cv.pk)
+    else:
+        form = Skillsform()
+    return render(request, 'cvg/form.html', {'form': form})
+
+
+@login_required
+def edit_sd(request, pk):
+    sd = get_object_or_404(Skills, pk=pk)
+    if request.method == 'POST':
+        form = Skillsform(request.POST, instance=sd)
+        if form.is_valid():
+            sd = form.save(commit=False)
+            sd.edited_by = str(request.user)
+            sd.modified_date = timezone.now()
+            sd.save()
+            return redirect('cvg:cv_detail', pk=sd.cv.pk)
+    else:
+        form = Skillsform(instance=sd)
+    return render(request, 'cvg/form.html', {'form': form})
+
+
+@login_required
+def remove_sd(request, pk):
+    sd = get_object_or_404(Skills, pk=pk)
+    sd.delete()
+    return redirect('cvg:cv_detail', pk=sd.cv.pk)
+
+
+@login_required
+def unapprove_sd(request, pk):
+    sd = get_object_or_404(Skills, pk=pk)
+    sd.unapprove()
+    return redirect('cvg:cv_detail', pk=sd.cv.pk)
+
+
+# Extracurricular section
+@login_required
+def add_ed_to_cv(request, pk):
+    cv = get_object_or_404(Cv, pk=pk)
+    if request.method == 'POST':
+        form = Extracurricularform(request.POST)
+        if form.is_valid():
+            ed = form.save(commit=False)
+            ed.edited_by = str(request.user)
+            ed.modified_date = timezone.now()
+            ed.cv = cv
+            ed.save()
+            return redirect('cvg:cv_detail', pk=cv.pk)
+    else:
+        form = Extracurricularform()
+    return render(request, 'cvg/form.html', {'form': form})
+
+
+@login_required
+def edit_ed(request, pk):
+    ed = get_object_or_404(Extracurricular, pk=pk)
+    if request.method == 'POST':
+        form = Extracurricularform(request.POST, instance=ed)
+        if form.is_valid():
+            ed = form.save(commit=False)
+            ed.edited_by = str(request.user)
+            ed.modified_date = timezone.now()
+            ed.save()
+            return redirect('cvg:cv_detail', pk=ed.cv.pk)
+    else:
+        form = Extracurricularform(instance=ed)
+    return render(request, 'cvg/form.html', {'form': form})
+
+
+@login_required
+def remove_ed(request, pk):
+    ed = get_object_or_404(Extracurricular, pk=pk)
+    ed.delete()
+    return redirect('cvg:cv_detail', pk=ed.cv.pk)
+
+
+@login_required
+def unapprove_ed(request, pk):
+    ed = get_object_or_404(Extracurricular, pk=pk)
+    ed.unapprove()
+    return redirect('cvg:cv_detail', pk=ed.cv.pk)
+
+
+# Internship section
+@login_required
+def add_ind_to_cv(request, pk):
+    cv = get_object_or_404(Cv, pk=pk)
+    if request.method == 'POST':
+        form = Internshipsform(request.POST)
+        if form.is_valid():
+            ind = form.save(commit=False)
+            ind.edited_by = str(request.user)
+            ind.modified_date = timezone.now()
+            ind.cv = cv
+            ind.save()
+            return redirect('cvg:cv_detail', pk=cv.pk)
+    else:
+        form = Internshipsform()
+    return render(request, 'cvg/form.html', {'form': form})
+
+
+@login_required
+def edit_ind(request, pk):
+    ind = get_object_or_404(Internships, pk=pk)
+    if request.method == 'POST':
+        form = Internshipsform(request.POST, instance=ind)
+        if form.is_valid():
+            ind = form.save(commit=False)
+            ind.edited_by = str(request.user)
+            ind.modified_date = timezone.now()
+            ind.save()
+            return redirect('cvg:cv_detail', pk=ind.cv.pk)
+    else:
+        form = Internshipsform(instance=ind)
+    return render(request, 'cvg/form.html', {'form': form})
+
+
+@login_required
+def remove_ind(request, pk):
+    ind = get_object_or_404(Internships, pk=pk)
+    ind.delete()
+    return redirect('cvg:cv_detail', pk=ind.cv.pk)
+
+
+@login_required
+def unapprove_ind(request, pk):
+    ind = get_object_or_404(Internships, pk=pk)
+    ind.unapprove()
+    return redirect('cvg:cv_detail', pk=ind.cv.pk)
+
+
+# Projects section
+@login_required
+def add_pd_to_cv(request, pk):
+    cv = get_object_or_404(Cv, pk=pk)
+    if request.method == 'POST':
+        form = Projectsform(request.POST)
+        if form.is_valid():
+            pd = form.save(commit=False)
+            pd.edited_by = str(request.user)
+            pd.modified_date = timezone.now()
+            pd.cv = cv
+            pd.save()
+            return redirect('cvg:cv_detail', pk=cv.pk)
+    else:
+        form = Projectsform()
+    return render(request, 'cvg/form.html', {'form': form})
+
+
+@login_required
+def edit_pd(request, pk):
+    pd = get_object_or_404(Projects, pk=pk)
+    if request.method == 'POST':
+        form = Projectsform(request.POST, instance=pd)
+        if form.is_valid():
+            pd = form.save(commit=False)
+            pd.edited_by = str(request.user)
+            pd.modified_date = timezone.now()
+            pd.save()
+            return redirect('cvg:cv_detail', pk=pd.cv.pk)
+    else:
+        form = Projectsform(instance=pd)
+    return render(request, 'cvg/form.html', {'form': form})
+
+
+@login_required
+def remove_pd(request, pk):
+    pd = get_object_or_404(Projects, pk=pk)
+    pd.delete()
+    return redirect('cvg:cv_detail', pk=pd.cv.pk)
+
+
+@login_required
+def unapprove_pd(request, pk):
+    pd = get_object_or_404(Projects, pk=pk)
+    pd.unapprove()
+    return redirect('cvg:cv_detail', pk=pd.cv.pk)
+
+
+# Roles section
+@login_required
+def add_rd_to_cv(request, pk):
+    cv = get_object_or_404(Cv, pk=pk)
+    if request.method == 'POST':
+        form = Rolesform(request.POST)
+        if form.is_valid():
+            rd = form.save(commit=False)
+            rd.edited_by = str(request.user)
+            rd.modified_date = timezone.now()
+            rd.cv = cv
+            rd.save()
+            return redirect('cvg:cv_detail', pk=cv.pk)
+    else:
+        form = Rolesform()
+    return render(request, 'cvg/form.html', {'form': form})
+
+
+@login_required
+def edit_rd(request, pk):
+    rd = get_object_or_404(Roles, pk=pk)
+    if request.method == 'POST':
+        form = Rolesform(request.POST, instance=rd)
+        if form.is_valid():
+            rd = form.save(commit=False)
+            rd.edited_by = str(request.user)
+            rd.modified_date = timezone.now()
+            rd.save()
+            return redirect('cvg:cv_detail', pk=rd.cv.pk)
+    else:
+        form = Rolesform(instance=rd)
+    return render(request, 'cvg/form.html', {'form': form})
+
+
+@login_required
+def remove_rd(request, pk):
+    rd = get_object_or_404(Roles, pk=pk)
+    rd.delete()
+    return redirect('cvg:cv_detail', pk=rd.cv.pk)
+
+
+@login_required
+def unapprove_rd(request, pk):
+    rd = get_object_or_404(Roles, pk=pk)
+    rd.unapprove()
+    return redirect('cvg:cv_detail', pk=rd.cv.pk)
 
 
 
