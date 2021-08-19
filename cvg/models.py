@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -32,6 +33,8 @@ months = (
 class Cv(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     edited_by = models.CharField(max_length=11, blank=True)
+    modified_date = models.DateTimeField(blank=True, null=True)
+    published_date = models.DateTimeField(blank=True, null=True)
 
     sap_id = models.IntegerField(unique=True)
     first_name = models.CharField(max_length=20)
@@ -45,10 +48,9 @@ class Cv(models.Model):
     address = models.TextField(max_length=100)
     age = models.IntegerField()
     gender = models.CharField(max_length=10, choices=genders, default='None')
-    published_date = models.DateTimeField(blank=True, null=True)
 
-    def published(self):
-        self.published_date = timezone.now()
+    def modified(self):
+        self.modified_date = timezone.now()
         self.save()
 
     def __str__(self):
@@ -64,7 +66,12 @@ class Academics(models.Model):
     twelfth_percentile = models.DecimalField(max_digits=4, decimal_places=2)
 
     approved = models.BooleanField(default=True)
-    created_date = models.DateTimeField(default=timezone.now)
+    modified_date = models.DateTimeField(default=timezone.now)
+    edited_by = models.CharField(max_length=11, blank=True)
+
+    def modified(self):
+        self.modified_date = timezone.now()
+        self.save()
 
     def unapprove(self):
         self.approved = False
@@ -76,9 +83,24 @@ class Academics(models.Model):
 
 class Skills(models.Model):
     cv = models.ForeignKey('cvg.Cv', on_delete=models.CASCADE, related_name='skills')
-    programminglangs = models.TextField(max_length=100)
-    tools = models.TextField(max_length=100)
-    coreskills = models.TextField(max_length=100)
+    programming_languages = models.TextField(max_length=100)
+    tools_familiar_with = models.TextField(max_length=100)
+    core_skills = models.TextField(max_length=100)
+
+    approved = models.BooleanField(default=True)
+    modified_date = models.DateTimeField(default=timezone.now)
+    edited_by = models.CharField(max_length=11, blank=True)
+
+    def modified(self):
+        self.modified_date = timezone.now()
+        self.save()
+
+    def unapprove(self):
+        self.approved = False
+        self.save()
+
+    def __str__(self):
+        return str(self.cv)
 
 
 class Extracurricular(models.Model):
@@ -86,46 +108,108 @@ class Extracurricular(models.Model):
     hobbies = models.TextField(max_length=50)
     certificates = models.TextField(max_length=100)
 
+    approved = models.BooleanField(default=True)
+    modified_date = models.DateTimeField(default=timezone.now)
+    edited_by = models.CharField(max_length=11, blank=True)
+
+    def modified(self):
+        self.modified_date = timezone.now()
+        self.save()
+
+    def unapprove(self):
+        self.approved = False
+        self.save()
+
+    def __str__(self):
+        return str(self.cv)
+
 
 class Internships(models.Model):
     cv = models.ForeignKey('cvg.Cv', on_delete=models.CASCADE, related_name='internships')
     organization = models.CharField(max_length=20)
     role = models.CharField(max_length=20)
-    startmonth = models.IntegerField(max_length=20, choices=months)
-    startyear = models.IntegerField(max_length=20, choices=years)
-    endmonth = models.IntegerField(max_length=20, choices=months)
-    endyear = models.IntegerField(max_length=20, choices=years)
+    start_month = models.CharField(max_length=10, choices=months, default='January')
+    start_year = models.IntegerField(choices=years, blank=True, null=True)
+    end_month = models.CharField(max_length=10, choices=months, default='January')
+    end_year = models.IntegerField(choices=years, blank=True, null=True)
     description = models.TextField(max_length=200)
+
+    approved = models.BooleanField(default=True)
+    modified_date = models.DateTimeField(default=timezone.now)
+    edited_by = models.CharField(max_length=11, blank=True, null=True)
+
+    def modified(self):
+        self.modified_date = timezone.now()
+        self.save()
+
+    def unapprove(self):
+        self.approved = False
+        self.save()
+
+    def __str__(self):
+        return str(self.cv)
 
 
 class Projects(models.Model):
     cv = models.ForeignKey('cvg.Cv', on_delete=models.CASCADE, related_name='projects')
     name = models.TextField(max_length=100)
-    toolstech = models.TextField(max_length=100)
-    startmonth = models.IntegerField(max_length=20, choices=months)
-    startyear = models.IntegerField(max_length=20, choices=years)
-    endmonth = models.IntegerField(max_length=20, choices=months)
-    endyear = models.IntegerField(max_length=20, choices=years)
+    tools_and_tech = models.TextField(max_length=100)
+    start_month = models.CharField(max_length=10, choices=months, default='January')
+    start_year = models.IntegerField(choices=years, blank=True, null=True)
+    end_month = models.CharField(max_length=10, choices=months, default='January')
+    end_year = models.IntegerField(choices=years, blank=True, null=True)
     description = models.TextField(max_length=200)
+
+    approved = models.BooleanField(default=True)
+    modified_date = models.DateTimeField(default=timezone.now)
+    edited_by = models.CharField(max_length=11, blank=True, null=True)
+
+    def modified(self):
+        self.modified_date = timezone.now()
+        self.save()
+
+    def unapprove(self):
+        self.approved = False
+        self.save()
+
+    def __str__(self):
+        return str(self.cv)
 
 
 class Roles(models.Model):
     cv = models.ForeignKey('cvg.Cv', on_delete=models.CASCADE, related_name='roles')
     organization = models.CharField(max_length=20)
     role = models.CharField(max_length=20)
-    startmonth = models.IntegerField(max_length=20, choices=months)
-    startyear = models.IntegerField(max_length=20, choices=years)
-    endmonth = models.IntegerField(max_length=20, choices=months)
-    endyear = models.IntegerField(max_length=20, choices=years)
+    start_month = models.CharField(max_length=10, choices=months, default='January')
+    start_year = models.IntegerField(choices=years, blank=True, null=True)
+    end_month = models.CharField(max_length=10, choices=months, default='January')
+    end_year = models.IntegerField(choices=years, blank=True, null=True)
     description = models.TextField(max_length=200)
 
+    approved = models.BooleanField(default=True)
+    modified_date = models.DateTimeField(default=timezone.now)
+    edited_by = models.CharField(max_length=11, blank=True)
 
+    def modified(self):
+        self.modified_date = timezone.now()
+        self.save()
+
+    def unapprove(self):
+        self.approved = False
+        self.save()
+
+    def __str__(self):
+        return str(self.cv)
+
+
+# to be discarded safely
 class Comment(models.Model):
     cv = models.ForeignKey('cvg.Cv', on_delete=models.CASCADE, related_name='comments')
     author = models.CharField(max_length=200)
     text = models.TextField()
     approved = models.BooleanField(default=False)
     created_date = models.DateTimeField(default=timezone.now)
+    # edited_by = models.CharField(max_length=11, blank=True)
 
     def approve(self):
         self.approved = True

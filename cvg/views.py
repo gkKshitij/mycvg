@@ -29,6 +29,38 @@ def cv_publish(request, pk):
     return redirect('cvg:cv_detail', pk=pk)
 
 
+# comment section
+@login_required
+def add_comment_to_cv(request, pk):
+    cv = get_object_or_404(Cv, pk=pk)
+    if request.method == 'POST':
+        form = Commentform(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.cv = cv
+            comment.save()
+            return redirect('cvg:cv_detail', pk=cv.pk)
+    else:
+        form = Commentform()
+        return render(request, 'cvg/addcomment.html', {'form': form})
+
+
+@login_required
+def remove_comment(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.delete()
+    return redirect('cvg:cv_detail', pk=comment.cv.pk)
+
+
+@login_required
+def comment_approve(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.approve()
+    return redirect('cvg:cv_detail', pk=comment.cv.pk)
+
+
+# actual start of useful stuff
 # signup custom view
 def signup(request):
     if request.user.is_authenticated:
@@ -70,6 +102,8 @@ def cv_new(request):
                 cvd.sap_id = int(str(request.user))
                 cvd.created_by = request.user
                 cvd.published_date = timezone.now()
+                cvd.modified_date = timezone.now()
+                cvd.edited_by = request.user
                 cvd.save()
                 return redirect('cvg:cv_detail', pk=cvd.pk)
             except:
@@ -78,14 +112,6 @@ def cv_new(request):
     else:
         form = Cvform()
     return render(request, 'cvg/form.html', {'form': form})
-
-
-@login_required
-def delete_cv(request, pk):
-    cv = get_object_or_404(Cv, pk=pk)
-    cv.delete()
-    # context = {'cvs': cvs}
-    return redirect('cvg:cv_list')
 
 
 ## generic form of above view
@@ -98,6 +124,14 @@ def delete_cv(request, pk):
 #         form.instance.created_by=self.request.user
 #         return super().form_valid(form)
 
+@login_required
+def delete_cv(request, pk):
+    cv = get_object_or_404(Cv, pk=pk)
+    cv.delete()
+    # context = {'cvs': cvs}
+    return redirect('cvg:cv_list')
+
+
 # edit cv basic details
 @login_required
 def cv_edit(request, pk):
@@ -107,7 +141,8 @@ def cv_edit(request, pk):
         if form.is_valid():
             cv = form.save(commit=False)
             cv.edited_by = str(request.user)
-            cv.published_date = timezone.now()
+            cv.modified_date = timezone.now()
+            cv.edited_by = str(request.user)
             cv.save()
             return redirect('cvg:cv_detail', pk=cv.pk)
     else:
@@ -115,7 +150,7 @@ def cv_edit(request, pk):
     return render(request, 'cvg/form.html', {'form': form})
 
 
-## generic form of above view
+# # generic form of above view
 # class Cv_edit(LoginRequiredMixin, UpdateView):
 #     # fields = '__all__'
 #     model = Cv
@@ -127,6 +162,15 @@ def cv_edit(request, pk):
 
 
 # ad=academic details and views related to that
+
+# class Edit_ad(LoginRequiredMixin, UpdateView):
+#     # fields = '__all__'
+#     model = Academics
+#     form_class = Academicsform
+#     template_name = 'cvg/add_ad.html'
+#     # def form_valid(self, form):
+#     #     form.instance.created_by=self.request.user
+#     #     return super().form_valid(form)
 @login_required
 def add_ad_to_cv(request, pk):
     cv = get_object_or_404(Cv, pk=pk)
@@ -134,6 +178,8 @@ def add_ad_to_cv(request, pk):
         form = Academicsform(request.POST)
         if form.is_valid():
             ad = form.save(commit=False)
+            ad.edited_by = str(request.user)
+            ad.modified_date = timezone.now()
             ad.cv = cv
             ad.save()
             return redirect('cvg:cv_detail', pk=cv.pk)
@@ -149,6 +195,8 @@ def edit_ad(request, pk):
         form = Academicsform(request.POST, instance=ad)
         if form.is_valid():
             ad = form.save(commit=False)
+            ad.edited_by = str(request.user)
+            ad.modified_date = timezone.now()
             ad.save()
             return redirect('cvg:cv_detail', pk=ad.cv.pk)
     else:
@@ -169,44 +217,10 @@ def unapprove_ad(request, pk):
     ad.unapprove()
     return redirect('cvg:cv_detail', pk=ad.cv.pk)
 
-# class Edit_ad(LoginRequiredMixin, UpdateView):
-#     # fields = '__all__'
-#     model = Academics
-#     form_class = Academicsform
-#     template_name = 'cvg/add_ad.html'
-#     # def form_valid(self, form):
-#     #     form.instance.created_by=self.request.user
-#     #     return super().form_valid(form)
-
-#comment section
-@login_required
-def add_comment_to_cv(request, pk):
-    cv = get_object_or_404(Cv, pk=pk)
-    if request.method == 'POST':
-        form = Commentform(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.author = request.user
-            comment.cv = cv
-            comment.save()
-            return redirect('cvg:cv_detail', pk=cv.pk)
-    else:
-        form = Commentform()
-        return render(request, 'cvg/addcomment.html', {'form': form})
 
 
-@login_required
-def remove_comment(request, pk):
-    comment = get_object_or_404(Comment, pk=pk)
-    comment.delete()
-    return redirect('cvg:cv_detail', pk=comment.cv.pk)
 
 
-@login_required
-def comment_approve(request, pk):
-    comment = get_object_or_404(Comment, pk=pk)
-    comment.approve()
-    return redirect('cvg:cv_detail', pk=comment.cv.pk)
 
 
 

@@ -5,15 +5,7 @@
 {% block content %}
 
     <div class="container">
-        {% if cv.published_date %}
-        <div>
-            <p>Last updated on : {{cv.published_date}}</p>
-        </div>
-        {% else %}
-            <a href="{% url 'cvg:cv_publish' pk=cv.pk %}" class="btn btn-primary">Publish</a>
-        {% endif %}
 
-        
         {% if user.is_authenticated and request.user == cv.created_by or user.is_superuser %}
         <a href="{% url 'cvg:cv_edit' pk=cv.pk %}"><i class="fa fa-edit fa-4x"></i></a>
         <a href="{% url 'cvg:delete_cv' pk=cv.pk %}" class="btn btn-danger" 
@@ -21,7 +13,7 @@
         {% endif %}
         
         <div class="container">
-          <h3> Basic Details </h3><p>Last updated on : <strong>{{cv.published_date}}</strong></p>
+          <h3> Basic Details </h3><p>Last updated on : <strong>{{cv.modified_date}}</strong></p>
 
           <table style="width:80%">
             <tr>
@@ -133,8 +125,10 @@
       </div>
         </div>
 
-    <a href="{% url 'cvg:add_ad' pk=cv.pk %}" class="btn btn-secondary">Add Academic Details</a>
-    <p>No comments yet..</p>
+        <div class="container">
+            <a href="{% url 'cvg:add_ad' pk=cv.pk %}" class="btn btn-secondary">Add Academic Details</a>
+            <p></p>
+        </div>
     
     {% endfor %}
     
