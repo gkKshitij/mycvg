@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Cv, Comment
+from .models import Academics, Cv, Comment
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit#, Layout, Field
@@ -17,11 +17,17 @@ class Cvform(forms.ModelForm):
         }
         
 
+class Academicsform(forms.ModelForm):
+    class Meta:
+        model = Academics
+        exclude = ('cv','created_date','approved')
+        
+
 class Commentform(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('text',)
-     
+    
         
 class UserForm(forms.ModelForm):
     password=forms.CharField(widget=forms.PasswordInput)

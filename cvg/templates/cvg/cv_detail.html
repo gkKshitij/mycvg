@@ -4,46 +4,161 @@
 {% block title %}{{cv.title}}{% endblock %}
 {% block content %}
 
-    <div>
+    <div class="container">
         {% if cv.published_date %}
         <div>
-            {{cv.published_date}}
+            <p>Last updated on : {{cv.published_date}}</p>
         </div>
         {% else %}
             <a href="{% url 'cvg:cv_publish' pk=cv.pk %}" class="btn btn-primary">Publish</a>
         {% endif %}
 
-        {% if user.is_authenticated %}
+        
+        {% if user.is_authenticated and request.user == cv.created_by or user.is_superuser %}
         <a href="{% url 'cvg:cv_edit' pk=cv.pk %}"><i class="fa fa-edit fa-4x"></i></a>
         <a href="{% url 'cvg:delete_cv' pk=cv.pk %}" class="btn btn-danger" 
         onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></a>
         {% endif %}
+        
+        <div class="container">
+          <h3> Basic Details </h3>
+          <table style="width:80%">
+            <tr>
+              <th>Fields</th>
+              <th>Values</th> 
+            </tr>
+            <tr>
+            <tr>
+              <td>First Name: </th>
+              <td>{{ cv.first_name }}</td>
+            </tr>
+            <tr>
+              <td>Last Name: </td>
+              <td>{{cv.last_name }}</td>
+            </tr>
+            <tr>
+              <td>Keywords: </td>
+              <td>{{cv.keywords }}</td>
+            </tr>
+            <tr>
+              <td>Mobile No.</td>
+              <td>{{cv.mobile_number }}</td>
+            </tr>
+            <tr>
+              <td>College Email:</td>
+              <td>{{cv.college_email_id }}</td>
+            </tr>
+            <tr>
+              <td>Personal Email:</td>
+              <td>{{cv.personal_email_id }}</td>
+            </tr>
+            <tr>
+              <td>Git Profile:</td>
+              <td>{{cv.git_profile_url }}</td>
+            </tr>
+            <tr>
+              <td>Linkedin Profile:</td>
+              <td>{{cv.linkedin_profile_url }}</td>
+            </tr>
+            <tr>
+              <td>Address:</td>
+              <td>{{cv.address }}</td>
+            </tr>
+            <tr>
+              <td>Age:</td>
+              <td>{{cv.age }}</td>
+            </tr>
+            <tr>
+              <td>Gender:</td>
+              <td>{{cv.gender }}</td>
+            </tr>
+          </table>
 
-        <h1>{{cv.title}}</h1>
+        </div>
+
+        <p>{{cv.title}}</p>
         <p>{{ cv.text }}</p>
     </div>
 
+    
+    
     <hr> 
 
-    <a href="{% url 'cvg:add_comment' pk=cv.pk %}" class="btn btn-secondary">Add Comment</a>
+    
     <br>
 
-    {% for comment in cv.comments.all %}
-    {% if user.is_authenticated or comment.approved %}
-        <div class="">
+    {% for ad in cv.academics.all %}
+      <div class="container">
+    {% if request.user == ad.cv.created_by or user.is_superuser %} 
 
-        {% if not comment.approved and user.is_superuser %}
-        <a href="{% url 'cvg:approve_comment' pk=comment.pk %}" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i></a>
-        <a href="{% url 'cvg:remove_comment' pk=comment.pk %}" class="btn"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            <a href="{% url 'cvg:edit_ad' pk=ad.pk %}"><i class="fa fa-edit fa-4x"></i></a>
+            <a href="{% url 'cvg:remove_ad' pk=ad.pk %}" class="btn btn-danger"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>
+            
+        {% if ad.approved and user.is_superuser %}
+        <a href="{% url 'cvg:unapprove_ad' pk=ad.pk %}" class="btn btn-primary"><i class="fa fa-times" aria-hidden="true"></i></a>
+        <strong>{{ad.created_date}}</strong>
         {% endif %}
-            <strong>{{comment.author}}</strong>
-            <p>{{comment.text }}</p>
-            {% endif %}
+      {% endif %}  
+      <h3> Academic Details </h3>
+          <table style="width:80%">
+            <tr>
+              <th>Fields</th>
+              <th>Values</th> 
+            </tr>
+            <tr>
+            <tr>
+              <td>First Name:</th>
+              <td>{{ad.admission_year }}</td>
+            </tr>
+            <tr>
+              <td>Graduation Year:</td>
+              <td>{{ad.graduation_year }}</td>
+            </tr>
+            <tr>
+              <td>CGPA:</td>
+              <td>{{ad.cgpa }}</td>
+            </tr>
+            <tr>
+              <td>Tenth Percentile:</td>
+              <td>{{ad.tenth_percentile }}</td>
+            </tr>
+            <tr>
+              <td>Twelfth Percentile:</td>
+              <td>{{ad.twelfth_percentile }}</td>
+            </tr>
+          </table>
+
             {% empty %}
 
         </div>
+
+    <a href="{% url 'cvg:add_ad' pk=cv.pk %}" class="btn btn-secondary">Add Academic Details</a>
     <p>No comments yet..</p>
     
     {% endfor %}
+    
+    
+    
+    <!-- <hr> 
+
+    <a href="{% url 'cvg:add_comment' pk=cv.pk %}" class="btn btn-secondary">Add A comment</a>
+    <br>
+
+    {% for comment in cv.comments.all %}
+      {% if user.is_authenticated or comment.approved %}
+          <div class="">
+
+          {% if not comment.approved and user.is_superuser %}
+          <a href="{% url 'cvg:approve_comment' pk=comment.pk %}" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i></a>
+          <a href="{% url 'cvg:remove_comment' pk=comment.pk %}" class="btn"><i class="fa fa-trash" aria-hidden="true"></i></a>
+          {% endif %}
+            <strong>{{comment.author}}</strong>
+            <p>{{comment.text }}</p>
+          {% endif %}
+          {% empty %}
+          </div>
+        <p>No comments yet..</p>
+    
+    {% endfor %} -->
     
 {% endblock %}

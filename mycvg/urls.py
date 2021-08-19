@@ -22,7 +22,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('polls/', include('polls.urls')),
     path('cvg/', include('cvg.urls')),
-    path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
-    path('accounts/logout/', auth_views.LogoutView.as_view(next_page='cvg:cv_list'), name='logout'),
+    
+    path('accounts/', include('django.contrib.auth.urls')),
+    # path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
+    # path('accounts/logout/', auth_views.LogoutView.as_view(next_page='cvg:cv_list'), name='logout'),
+    
     path('signup/', views.signup, name='signup'),
 ]
