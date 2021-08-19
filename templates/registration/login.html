@@ -46,7 +46,8 @@
   <p>Dont have an account? <a href="{% url 'signup' %}">Sign up</a></p>
 
   {# Assumes you setup the password_reset view in your URLconf #}
-  <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+{#        TODO: currently doesnt work as expected #}
+{#  <p><a href="{% url 'password_reset' %}">Lost password?</a></p>#}
   {% endif %}
 </div>
 
