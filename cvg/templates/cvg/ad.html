@@ -6,7 +6,7 @@
     <h2>Academics Details</h2>
     <form class="cv-form-blog" method="POST">
         {% csrf_token %} 
-        {{ adform|crispy }}
+        {{ form|crispy }}
         <button type="submit" class="btn btn-primary">submit details</button>
     </form>
 </div>

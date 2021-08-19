@@ -132,29 +132,29 @@ def cv_edit(request, pk):
 def add_ad_to_cv(request, pk):
     cv = get_object_or_404(Cv, pk=pk)
     if request.method == 'POST':
-        adform = Academicsform(request.POST)
-        if adform.is_valid():
-            ad = adform.save(commit=False)
+        form = Academicsform(request.POST)
+        if form.is_valid():
+            ad = form.save(commit=False)
             ad.cv = cv
             ad.save()
             return redirect('cvg:cv_detail', pk=cv.pk)
     else:
-        adform = Academicsform()
-    return render(request, 'cvg/add_ad.html', {'adform': adform})
+        form = Academicsform()
+    return render(request, 'cvg/ad.html', {'form': form})
 
 
 @login_required
 def edit_ad(request, pk):
     ad = get_object_or_404(Academics, pk=pk)
     if request.method == 'POST':
-        adform = Academicsform(request.POST, instance=ad)
-        if adform.is_valid():
-            ad = adform.save(commit=False)
+        form = Academicsform(request.POST, instance=ad)
+        if form.is_valid():
+            ad = form.save(commit=False)
             ad.save()
             return redirect('cvg:cv_detail', pk=ad.cv.pk)
     else:
-        adform = Academicsform(instance=ad)
-    return render(request, 'cvg/add_ad.html', {'adform': adform})
+        form = Academicsform(instance=ad)
+    return render(request, 'cvg/ad.html', {'form': form})
 
 
 @login_required
