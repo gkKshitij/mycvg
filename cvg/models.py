@@ -83,9 +83,9 @@ class Academics(models.Model):
 
 class Skills(models.Model):
     cv = models.ForeignKey('cvg.Cv', on_delete=models.CASCADE, related_name='skills')
-    programming_languages = models.TextField(max_length=100)
-    tools_familiar_with = models.TextField(max_length=100)
-    core_skills = models.TextField(max_length=100)
+    programming_languages = models.TextField(max_length=100, null=True, blank=True)
+    tools_familiar_with = models.TextField(max_length=100, null=True, blank=True)
+    core_skills = models.TextField(max_length=100, null=True, blank=True)
 
     approved = models.BooleanField(default=True)
     modified_date = models.DateTimeField(default=timezone.now)
@@ -105,8 +105,9 @@ class Skills(models.Model):
 
 class Extracurricular(models.Model):
     cv = models.ForeignKey('cvg.Cv', on_delete=models.CASCADE, related_name='extracurricular')
-    hobbies = models.TextField(max_length=50)
-    certificates = models.TextField(max_length=100)
+    hobby = models.TextField(max_length=100, blank=True, null=True)
+    certificates = models.TextField(max_length=100, blank=True, null=True)
+    academic_achievements = models.TextField(max_length=100, blank=True, null=True)
 
     approved = models.BooleanField(default=True)
     modified_date = models.DateTimeField(default=timezone.now)

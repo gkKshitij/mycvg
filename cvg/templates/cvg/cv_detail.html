@@ -30,7 +30,10 @@
 
         {% if user.is_authenticated and request.user == cv.created_by or user.is_superuser %}
         <a href="{% url 'cvg:cv_edit' pk=cv.pk %}" class="btn btn-primary"><i class="fa fa-pencil fa-2x"></i></a>
-        <a href="{% url 'cvg:delete_cv' pk=cv.pk %}" class="btn btn-danger" 
+
+            <a href="{% url 'cvg:cv_preview' pk=cv.pk %}" class="btn btn-primary"><i class="fa fa-print fa-2x"></i></a>
+
+        <a href="{% url 'cvg:delete_cv' pk=cv.pk %}" class="btn btn-danger"
         onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></a>
         {% endif %}
         
@@ -237,11 +240,15 @@
             <tr>
             <tr>
               <td>Hobbies:</th>
-              <td>{{ed.hobbies }}</td>
+              <td>{{ed.hobby }}</td>
             </tr>
             <tr>
               <td>Certificates:</td>
               <td>{{ed.certificates }}</td>
+            </tr>
+            <tr>
+              <td>Academic achievements :</td>
+              <td>{{ed.academic_achievements }}</td>
             </tr>
           </table>
 
@@ -313,6 +320,7 @@
           <br>
             {% empty %}
       </div>
+      <p>No Internships added yet</p>
       </div>
 
     {% endfor %}
@@ -378,6 +386,7 @@
 
             {% empty %}
       </div>
+      <p>No Projects added yet</p>
       </div>
 
     {% endfor %}
@@ -442,6 +451,7 @@
           <br>
             {% empty %}
       </div>
+      <p>No Roles added yet</p>
       </div>
 
     {% endfor %}

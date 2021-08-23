@@ -11,7 +11,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Academics, Cv, Comment, Skills, Extracurricular, Internships, Projects, Roles
 from .forms import Cvform, Commentform, UserForm, Academicsform, Skillsform, Extracurricularform, Internshipsform, \
     Projectsform, Rolesform
+from .custom import *
 
+import os
+from subprocess import call
+from tempfile import mkdtemp, mkstemp
+from django.template.loader import render_to_string
 
 # Create your views here.
 
@@ -62,6 +67,104 @@ def comment_approve(request, pk):
 
 
 # actual start of useful stuff
+
+# filename = 'listing' + row['stockID'] + '.htm'
+def func():
+    dest_folder= os.path.abspath(os.getcwd())
+    # In a temporary folder, make a temporary file
+    tmp_folder = mkdtemp()
+    os.chdir(tmp_folder)
+    texfile, texfilename = mkstemp(dir=tmp_folder)
+    # Pass the TeX template through Django templating engine and into the temp file
+    os.write(texfile, render_to_string('tex/base.tex', {'var': 'whatever'}))
+    os.close(texfile)
+    # Compile the TeX file with PDFLaTeX
+    call(['pdflatex', texfilename])
+    # Move resulting PDF to a more permanent location
+    os.rename(texfilename + '.pdf', dest_folder)
+    # Remove intermediate files
+    os.remove(texfilename)
+    os.remove(texfilename + '.aux')
+    os.remove(texfilename + '.log')
+    os.rmdir(tmp_folder)
+    return os.path.join(dest_folder, texfilename + '.pdf')
+
+
+# d_func(base,dct)
+def substitution(template, dct):
+    """
+    takes string template and dictionary and renders after substitution only
+    """
+    tl = 'static/cvg/'+template+'.tex'
+
+    with open(template, 'r') as temp:
+        data = temp.read()
+        # print('Template loaded:') # Print template for visual cue.
+
+    key_list = list(dct.keys())
+    val_list = list(dct.values())
+
+    res = [sub.replace(sub, 'k'+sub) for sub in key_list]
+    res_dct = {res[i]: val_list[i] for i in range(len(res))}
+
+    # bkp manual method
+    for key, value in res_dct.items():
+        d = d.replace(key, str(value)) # Replace key character with value character in string
+
+    return d
+    # print(d)
+
+
+# preview cv
+def cv_preview(request, pk):
+    cv = get_object_or_404(Cv, pk=pk)
+    dcv_id = cv.id
+
+    internships_c = 0
+    projects_c = 0
+    roles_c = 0
+
+    # cvs = Cv.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+
+    ad = get_object_or_404(Academics, cv_id=dcv_id)
+
+    sd = get_object_or_404(Skills, cv_id=dcv_id)
+    # ed = get_object_or_404(Extracurricular, cv_id=dcv_id)
+    if bool(sd):
+        sdstr = 
+
+
+
+    cvd = cv.__dict__
+
+    ind = Internships.objects.filter(cv_id=dcv_id).order_by('end_year' and 'end_month')
+    for i in ind:
+        internships_c += 1
+
+
+    pd = Projects.objects.filter(cv_id=dcv_id).order_by('end_year' and 'end_month')
+    rd = Roles.objects.filter(cv_id=dcv_id).order_by('end_year' and 'end_month')
+
+    # make_pdf()
+    return HttpResponse(internships_c)
+
+
+    # cwd = os.getcwd()
+    # stdir = os.path.join(cwd, "generator\static\generator")#, "test.tex")
+    # fp = os.path.join(cwd, "generator\static\generator", "test.pdf")
+    # os.chdir(stdir)
+    # subprocess.check_call(['pdflatex', '-interaction=nonstopmode', 'test.tex'])
+    # os.remove("test.aux")
+    # os.remove("test.log")
+    # os.chdir(cwd)
+    #
+    # return FileResponse(open(fp, 'rb'), content_type='application/pdf')
+    # # return HttpResponse(f"{stdir}")
+
+
+#
+
+
 # signup custom view
 def signup(request):
     if request.user.is_authenticated:
@@ -457,13 +560,3 @@ def unapprove_rd(request, pk):
     rd = get_object_or_404(Roles, pk=pk)
     rd.unapprove()
     return redirect('cvg:cv_detail', pk=rd.cv.pk)
-
-
-
-
-
-
-
-
-
-

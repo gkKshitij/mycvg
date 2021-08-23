@@ -1,0 +1,285 @@
+\documentclass[letterpaper,11pt]{article}
+\batchmode
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage{multicol}
+\setlength{\multicolsep}{-3.0pt}
+\setlength{\columnsep}{-1pt}
+\input{glyphtounicode}
+\usepackage{graphicx}
+\graphicspath{{/}}
+
+
+%----------FONT OPTIONS----------
+% sans-serif
+% \usepackage[sfdefault]{FiraSans}
+% \usepackage[sfdefault]{roboto}
+% \usepackage[sfdefault]{noto-sans}
+% \usepackage[default]{sourcesanspro}
+
+% \usepackage{montserrat}
+% serif
+% \usepackage{CormorantGaramond}
+% \usepackage{charter}
+
+% \usepackage[
+%   defaultfam,
+%   extralight,
+%   tabular,
+%   lining
+% ]{montserrat}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.19in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\classesList}[4]{
+    \item\small{
+        {#1 #2 #3 #4 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textbf{\small #2} \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{1.001\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & \textbf{\small #2}\\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+\begin{center}
+\begin{minipage}{0.55\textwidth}
+\includegraphics[scale=3]{nmims_logo.jpg}
+\end{minipage}
+% \hspace{20pt}
+\begin{minipage}{0.4\textwidth}
+% \hspace{25pt}
+\raggedright
+% \centering
+    {\huge \scshape Kshitij Koyande } \\ 
+    \vspace{1pt}
+   { 
+    % Kharghar, Navi Mumbai, Maharashtra, 410210 \\ \vspace{1pt}
+    \href{tel:+919869117063}{\small \raisebox{-0.1\height}\faPhone\ \underline{+91 9869117063}} ~ 
+    \href{https://www.linkedin.com/in/kshitij-koyande-a85aa2149}{\raisebox{-0.2\height}\faLinkedin\ \underline{LinkedIn}}  ~
+    \href{https://github.com/gkKshitij}{\raisebox{-0.2\height}\faGithub\ \underline{GitHub}}\\
+    \href{mailto:kshitij.koyande16@nmims.edu.in}{\raisebox{-0.2\height}\faEnvelope\  \underline{kshitij.koyande16@nmims.edu.in}}\\
+    }
+\end{minipage}
+\vspace{4pt}
+%     \begin{figure}
+%     % {l}{1\textwidth}
+%       \centering
+%       \includegraphics[scale=1.5]{nmims_logo.jpg}
+%       \label{fig:nmims_logo}
+%     \end{figure} 
+
+    \vspace{-8pt}
+\end{center}
+
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Narsee Monjee Institute of Technology Management and  Engineering}{2017 - 2022}
+      {Btech (Computer Science), MBA}{CGPA: 2.7/4}
+  \resumeSubHeadingListEnd
+
+%-----------PROGRAMMING SKILLS-----------
+\section{Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: C, C++, Java, Python (3.x), HTML, CSS, JavaScript (ES6) } \\
+     \textbf{Tools \& Technologies}{: Web Development, Machine Learning, Artificial Intelligence, Git \& GitHub, Internet Of Things, Django, Anvil } \\
+     \textbf{Core Skills}{: Communication,  Adaptability } \\
+    }}
+ \end{itemize}
+ \vspace{-16pt}
+
+% -----------MANAGEMENT SKILLS-----------
+% Needs more discussion
+\section{Extracurricular}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Academic Achievements}{: First Place in Coding Competition organised by College (2020) } \\
+    
+     \textbf{Hobbies}{: Listening Music, Playing Games } \\
+     
+     \textbf{Certifications \& Courses}{: Workshop on Artificial Intelligence and Machine Learning organised by IIT Roorkee, Workshop on banking and Technology Innovation } \\
+     
+    }}
+ \end{itemize}
+ \vspace{-16pt}
+
+%------RELEVANT COURSEWORK-------
+% \section{Relevant Coursework}
+%     %\resumeSubHeadingListStart
+%         \begin{multicols}{4}
+%             \begin{itemize}[itemsep=-5pt, parsep=3pt]
+%                 \item\small Data Structures
+%                 \item Software Methodology
+%                 \item Algorithms Analysis
+%                 \item Database Management
+%                 \item Artificial Intelligence
+%                 \item Internet Technology
+%                 \item Systems Programming
+%                 \item Computer Architecture
+%             \end{itemize}
+%         \end{multicols}
+%         \vspace*{2.0\multicolsep}
+    %\resumeSubHeadingListEnd
+
+
+%-----------EXPERIENCE-----------
+\section{Internships}
+  \resumeSubHeadingListStart
+  \resumeSubheading
+      {Chegg Inc.}{Jan 2021 - Present}
+      {Expert (Computer Science)}{}
+      \resumeItemListStart
+        \resumeItem{Helping students solve their home-work questions whenever time permits.}
+      \resumeItemListEnd
+    \resumeSubHeadingListEnd
+    \resumeSubheading
+      {Colorbar}{May 2021 - Sept 2021}
+      {Data Analyst (Management Intern)}{}
+      \resumeItemListStart
+        \resumeItem{Working under category head for helping with daily activities. }
+        \resumeItem{Planing and decision making with a team for new product line launch.}
+        \resumeItem{Research on various things necessary for coming up with ideas for new product line (eg. packaging, preferences etc.).}
+      \resumeItemListEnd
+    \resumeSubheading
+      {AI Kairos}{Aug 2020 - April 2021}
+      {Technical Intern}{}
+      \resumeItemListStart
+        \resumeItem{Worked on an IOT powered OOH handling Application }
+        \resumeItem{Taking data from sensors and sending it to server for further process.}
+        \resumeItem{Retrieving and cleaning data from sensor for visual representation to whoever needed.}
+      \resumeItemListEnd
+    \resumeSubHeadingListEnd
+    \resumeSubheading
+      {M76 Analytics}{May 2020 - June 2020}
+      {Data Scraper and Analyst (Intern)}{}
+      \resumeItemListStart
+        \resumeItem{Data processing.[analytics and analysis].}
+        \resumeItem{Cleaning and re-indexing client’s data.}
+        \resumeItem{Designed scripts for automation of work.}
+      \resumeItemListEnd
+    \resumeSubHeadingListEnd
+    
+\vspace{-6pt}
+
+%-----------PROJECTS-----------
+\section{Projects}
+
+    \resumeSubheading
+      {Point of Sales with Internet of Things - OOH handling Application}{March 2021}
+      {Python, C, IOT, Flask}{}
+      \resumeItemListStart
+        \resumeItem{Used C as back end to transfer data from sensors & NodeMCU to Google Sheets }
+        \resumeItem{Used Python to retrieve the data for analytics and Flask Framework to present the same.}
+      \resumeItemListEnd
+    \resumeSubHeadingListEnd
+    
+    \resumeSubheading
+      {Klock - simple applock for Android (deprecated)}{Oct 2019}
+      {Java}{}
+      \resumeItemListStart
+        \resumeItem{Made a simple applock as a part of course curriculum while learning java. }
+      \resumeItemListEnd
+    \resumeSubHeadingListEnd
+    
+    \resumeSubheading
+      {Static Websites}{2019}
+      {HTML, CSS, JS)}{}
+      \resumeItemListStart
+        \resumeItem{Designed some basic websites as a part of course curriculum while learning UI/UX and Web Development.}
+
+      \resumeItemListEnd
+    \resumeSubHeadingListEnd
+    
+\vspace{-16pt}
+
+
+% \section{Personal Details}
+%     \begin{itemize}[leftmargin=0.15in, label={}]
+%         \small{\item{
+%          \textbf{Permanent Address}{: Ambernath (E), Thane Dist., Maharashtra } \\
+%          \textbf{Spoken Languages}{: English, Hindi } \\
+%          \textbf{Date of Birth}{: 19-02-2001} \\
+%         }}
+%     \end{itemize}
+%  \vspace{-16pt}
+\end{document}
