@@ -14,9 +14,12 @@ from .forms import Cvform, Commentform, UserForm, Academicsform, Skillsform, Ext
 from .custom import *
 
 import os
+import subprocess
 from subprocess import call
+from django.http import FileResponse
 from tempfile import mkdtemp, mkstemp
 from django.template.loader import render_to_string
+
 
 # Create your views here.
 
@@ -67,87 +70,184 @@ def comment_approve(request, pk):
 
 
 # actual start of useful stuff
-
-# filename = 'listing' + row['stockID'] + '.htm'
-def func():
-    dest_folder= os.path.abspath(os.getcwd())
-    # In a temporary folder, make a temporary file
-    tmp_folder = mkdtemp()
-    os.chdir(tmp_folder)
-    texfile, texfilename = mkstemp(dir=tmp_folder)
-    # Pass the TeX template through Django templating engine and into the temp file
-    os.write(texfile, render_to_string('tex/base.tex', {'var': 'whatever'}))
-    os.close(texfile)
-    # Compile the TeX file with PDFLaTeX
-    call(['pdflatex', texfilename])
-    # Move resulting PDF to a more permanent location
-    os.rename(texfilename + '.pdf', dest_folder)
-    # Remove intermediate files
-    os.remove(texfilename)
-    os.remove(texfilename + '.aux')
-    os.remove(texfilename + '.log')
-    os.rmdir(tmp_folder)
-    return os.path.join(dest_folder, texfilename + '.pdf')
+# csddct = dctc(dct)
+def dctc(dct):
+    """dictionary cleaner removes null/blank values"""
+    null = ""
+    cdct = {k: v for k, v in dct.items() if v != null}
+    # print(cdct)
+    return cdct
 
 
-# d_func(base,dct)
-def substitution(template, dct):
+# sefunc('mst', csddct)
+def sefunc(textemplate, rdct):  # use only for skills and extracurricular
     """
-    takes string template and dictionary and renders after substitution only
+    takes string template and raw dictionary and renders after substitution only
     """
-    tl = 'static/cvg/'+template+'.tex'
+    dct = dctc(rdct)
+    with open(f'cvg/static/cvg/{textemplate}.tex', 'r') as template:
 
-    with open(template, 'r') as temp:
-        data = temp.read()
-        # print('Template loaded:') # Print template for visual cue.
+        # print(len(dct.keys()))
+        d = template.read()  # .replace('first_name','Kshitij') #.split()
+        print('Template loaded:')  # Print template for visual cue.
 
     key_list = list(dct.keys())
     val_list = list(dct.values())
 
-    res = [sub.replace(sub, 'k'+sub) for sub in key_list]
+    com = [sub.replace(sub, '%' + sub) for sub in key_list]
+    com_dct = {com[i]: " " for i in range(len(com))}
+
+    for key, value in com_dct.items():
+        d = d.replace(key, str(value))  # Replace comments key character with null/space
+
+    # print(com_dct)
+
+    res = [sub.replace(sub, 'kk' + sub) for sub in key_list]
     res_dct = {res[i]: val_list[i] for i in range(len(res))}
 
     # bkp manual method
     for key, value in res_dct.items():
-        d = d.replace(key, str(value)) # Replace key character with value character in string
+        d = d.replace(key, str(value))  # Replace key character with value character in string
 
-    return d
     # print(d)
+    return d
+
+
+# iprf('r_prot', dct)
+def iprfunc(textemplate, dct, hstr):  # use only for internships,projects,roles
+    """
+    takes string template and dictionary object for rendering after substitution only
+    """
+
+    with open(f'cvg/static/cvg/{textemplate}.tex', 'r') as template:
+
+        # print(len(dct.keys()))
+        d = template.read()  # .replace('first_name','Kshitij') #.split()
+        print('Template loaded:')  # Print template for visual cue.
+
+    # for i in pd:
+    #     dct=i
+
+    key_list = list(dct.keys())
+    val_list = list(dct.values())
+    prefix = "\kkkresumeItem{"
+
+    temp_desc = (dct['description']).split('\n')
+    # print(len(temp_desc))
+    mod_desc = ''
+    for aline in temp_desc:
+        # print(aline)
+        mod_desc = mod_desc + prefix + aline + '}\t'
+
+    d = d.replace('description', mod_desc)
+    d = d.replace('kkk', "")
+    res = [sub.replace(sub, 'kk' + sub) for sub in key_list]
+    res_dct = {res[i]: val_list[i] for i in range(len(res))}
+    # res_dct['kdescription'] = mod_desc
+    # print(mod_desc)
+
+    # bkp manual method
+    for key, value in res_dct.items():
+        d = d.replace(key, str(value))  # Replace key character with value character in string
+    hstr = hstr + d
+    # print(d)
+    return hstr
 
 
 # preview cv
 def cv_preview(request, pk):
     cv = get_object_or_404(Cv, pk=pk)
     dcv_id = cv.id
+    # null=""
 
     internships_c = 0
     projects_c = 0
     roles_c = 0
 
-    # cvs = Cv.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
-
     ad = get_object_or_404(Academics, cv_id=dcv_id)
 
-    sd = get_object_or_404(Skills, cv_id=dcv_id)
-    # ed = get_object_or_404(Extracurricular, cv_id=dcv_id)
-    if bool(sd):
-        sdstr = 
-
-
-
     cvd = cv.__dict__
+    ad_d = ad.__dict__
 
+    cdict = {**cvd, **ad_d}
+    # cvs = Cv.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+    final = sefunc('base', cdict)
+
+    sd = get_object_or_404(Skills, cv_id=dcv_id)
+    ed = get_object_or_404(Extracurricular, cv_id=dcv_id)
+
+    # skill string maker
+    if bool(sd):
+        sd_d = sd.__dict__
+        sd_str = sefunc('pst', sd_d)
+        final = final + "\n" + sd_str
+
+    # extracurricular string maker
+    if bool(ed):
+        ed_d = ed.__dict__
+        ed_str = sefunc('mst', ed_d)
+        final = final + "\n" + ed_str
+
+    # internship string maker
     ind = Internships.objects.filter(cv_id=dcv_id).order_by('end_year' and 'end_month')
-    for i in ind:
-        internships_c += 1
+    if bool(ind):
+        ind_str = "\section{Internships}"
+        for i in ind:
+            internships_c += 1
+            tidct = i.__dict__
+            ind_str = iprfunc('r_irt', tidct, ind_str)
+        final = final + "\n" + ind_str
 
-
+    # projects string maker
     pd = Projects.objects.filter(cv_id=dcv_id).order_by('end_year' and 'end_month')
+    if bool(pd):
+        pd_str = "\section{Projects}"
+        for j in pd:
+            projects_c += 1
+            tjdct = j.__dict__
+            pd_str = iprfunc('r_prot', tjdct, pd_str)
+        final = final + "\n" + pd_str
+
     rd = Roles.objects.filter(cv_id=dcv_id).order_by('end_year' and 'end_month')
+    if bool(rd):
+        rd_str = "\section{Roles}"
+        for k in rd:
+            roles_c += 1
+            tkdct = k.__dict__
+            rd_str = iprfunc('r_irt', tkdct, rd_str)
+        final = final + "\n" + rd_str
 
+    suffix="\end{document}"
+    final = final + suffix
+    #
+    #
+    #
     # make_pdf()
-    return HttpResponse(internships_c)
+    filename = str(cv.sap_id)
+    cwd = os.getcwd()  # current working directory
+    stdir = os.path.join(cwd, "cvg\static\cvg")  # "test.tex") # static directory
+    fp = os.path.join(cwd, "cvg\static\cvg", f"{filename}.pdf")
+    os.chdir(stdir)
 
+    # try:
+    #     os.remove(f"{filename}.pdf")
+    # except:
+    #     pass
+    # finally:
+    #     print("reached here")
+
+    f = open(f"{filename}.tex", "w")
+    f.write(final)
+    f.close()
+
+    subprocess.check_call(['pdflatex', '-interaction=nonstopmode', f'{filename}.tex'])
+    os.remove(f"{filename}.aux")
+    os.remove(f"{filename}.log")
+    os.chdir(cwd)
+
+    return FileResponse(open(fp, 'rb'), content_type='application/pdf')
+    # return HttpResponse(f"{stdir}")
+    # return HttpResponse(filename+'k')
 
     # cwd = os.getcwd()
     # stdir = os.path.join(cwd, "generator\static\generator")#, "test.tex")
@@ -160,6 +260,27 @@ def cv_preview(request, pk):
     #
     # return FileResponse(open(fp, 'rb'), content_type='application/pdf')
     # # return HttpResponse(f"{stdir}")
+
+    # # filename = 'listing' + row['stockID'] + '.htm'
+    # def func():
+    #     dest_folder= os.path.abspath(os.getcwd())
+    #     # In a temporary folder, make a temporary file
+    #     tmp_folder = mkdtemp()
+    #     os.chdir(tmp_folder)
+    #     texfile, texfilename = mkstemp(dir=tmp_folder)
+    #     # Pass the TeX template through Django templating engine and into the temp file
+    #     os.write(texfile, render_to_string('tex/base.tex', {'var': 'whatever'}))
+    #     os.close(texfile)
+    #     # Compile the TeX file with PDFLaTeX
+    #     call(['pdflatex', texfilename])
+    #     # Move resulting PDF to a more permanent location
+    #     os.rename(texfilename + '.pdf', dest_folder)
+    #     # Remove intermediate files
+    #     os.remove(texfilename)
+    #     os.remove(texfilename + '.aux')
+    #     os.remove(texfilename + '.log')
+    #     os.rmdir(tmp_folder)
+    #     return os.path.join(dest_folder, texfilename + '.pdf')
 
 
 #

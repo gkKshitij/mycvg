@@ -2,10 +2,10 @@
 cvgenrator refactoring from mycvg
 
 What it does:
-1) take input from user [done partially]
-2) saves it in db [it does that on itself]
-3) makes a tex file
-4) renders the tex file to pdf to view/download
+1) take input from user [completed]
+2) saves it in db [completed]
+3) makes a tex file [completed]
+4) renders the tex file to pdf to view/download [completed]
 
 for use just clone master and run just as normal django projects
 i.e execute "python manage.py runserver" in terminal
