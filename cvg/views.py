@@ -240,19 +240,21 @@ def cv_preview(request, pk):
     # texfile, texfilename = mkstemp(dir=tmp_folder)
     
     call(['pdflatex', filename])
-    
-    # os.rename(f'{texfilename}.pdf',tmp_folder) #f'{filename}.pdf') #, destination)
-    
-    source = os.path.join( tmp_folder, filename+'.pdf')
-    k = shutil.move(source, destination, copy_function = shutil.copytree) 
-    
-    os.remove(filename)
-    os.remove(filename + '.aux')
-    os.remove(filename + '.log')
-    os.rmdir(tmp_folder)
-    
-    fp = os.path.join( STATIC_ROOT, filename+'.pdf')
+    fp = os.path.join( tmp_folder, filename+'.pdf')
     return FileResponse(open(fp, 'rb'), content_type='application/pdf')
+    
+    # # os.rename(f'{texfilename}.pdf',tmp_folder) #f'{filename}.pdf') #, destination)
+    
+    # source = os.path.join( tmp_folder, filename+'.pdf')
+    # k = shutil.move(source, destination, copy_function = shutil.copytree) 
+    
+    # os.remove(filename)
+    # os.remove(filename + '.aux')
+    # os.remove(filename + '.log')
+    # os.rmdir(tmp_folder)
+    
+    # fp = os.path.join( STATIC_ROOT, filename+'.pdf')
+    # return FileResponse(open(fp, 'rb'), content_type='application/pdf')
     
     # cwd = os.getcwd()  # current working directory
     # stdir = STATIC_ROOT #os.path.join(cwd, "cvg\static\cvg")  # "test.tex") # static directory
