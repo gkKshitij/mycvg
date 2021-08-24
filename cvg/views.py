@@ -239,7 +239,7 @@ def cv_preview(request, pk):
     
     # texfile, texfilename = mkstemp(dir=tmp_folder)
     
-    call(['pdflatex', '-interaction=nonstopmode', filename]) #'$BUILD_DIR/buildpack/bin/x86_64-linux/'+filename])
+    call(['pdflatex', '-interaction=nonstopmode', filename ]) #'$BUILD_DIR/buildpack/bin/x86_64-linux/'+filename])
     ff = open(texfilename, "r")
     
     k = os.listdir(tmp_folder)

@@ -1,4 +1,2 @@
-export MANPATH="$MANPATH:/usr/local/texlive/2020/texmf-dist/doc/man"
-export INFOPATH="$INFOPATH:/usr/local/texlive/2020/texmf-dist/doc/info"
-export PATH=/usr/local/texlive/2020/bin/x86_64-linux:$PATH
+export PATH="$BUILD_DIR/buildpack/bin/x86_64-linux"
 web: gunicorn mycvg.wsgi
