@@ -235,13 +235,15 @@ def cv_preview(request, pk):
     f.write(final)
     f.close()
     
-    # texfilename = filename+".tex"
+    texfilename = filename+".tex"
     
     # texfile, texfilename = mkstemp(dir=tmp_folder)
     
     call(['pdflatex', filename])
+    ff = open(r"texfilename", "r")
+    
     k = os.listdir(tmp_folder)
-    return HttpResponse(k)
+    return HttpResponse(ff)
     
     # fp = os.path.join( tmp_folder, filename+'.pdf')
     # return FileResponse(open(fp, 'rb'), content_type='application/pdf')
