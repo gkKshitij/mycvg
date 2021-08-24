@@ -230,7 +230,7 @@ def cv_preview(request, pk):
     # cwd = os.getcwd()  # current working directory
     # stdir = STATIC_ROOT #os.path.join(cwd, "cvg\static\cvg")  # "test.tex") # static directory
     # fp = os.path.join(cwd, "cvg\static\cvg", f"{filename}.pdf")
-    fp = os.path.join( STATIC_ROOT, f"{filename}.pdf")
+    
     os.chdir(STATIC_ROOT)
 
     # try:
@@ -249,7 +249,8 @@ def cv_preview(request, pk):
     os.remove(f"{filename}.log")
     os.remove(f"{filename}.out")
     os.chdir(BASE_DIR)
-
+    
+    fp = os.path.join( STATIC_ROOT, f"{filename}.pdf")
     return FileResponse(open(fp, 'rb'), content_type='application/pdf')
     # return HttpResponse(f"{stdir}")
     # return HttpResponse(filename+'k')
