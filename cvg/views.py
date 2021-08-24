@@ -239,7 +239,7 @@ def cv_preview(request, pk):
     
     # texfile, texfilename = mkstemp(dir=tmp_folder)
     
-    call(['pdflatex', filename])
+    call(['pdflatex', '-interaction=nonstopmode', filename])
     ff = open(texfilename, "r")
     
     k = os.listdir(tmp_folder)
