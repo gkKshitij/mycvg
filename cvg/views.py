@@ -15,12 +15,12 @@ from .custom import *
 from mycvg.settings import *
 
 import os
-import subprocess
+# import subprocess
 from django.http import FileResponse
 
-# from subprocess import call
-# from tempfile import mkdtemp, mkstemp
-# from django.template.loader import render_to_string
+from subprocess import call
+from tempfile import mkdtemp, mkstemp
+from django.template.loader import render_to_string
 
 
 # Create your views here.
@@ -221,75 +221,60 @@ def cv_preview(request, pk):
 
     suffix="\end{document}"
     final = final + suffix
+    filename = str(cv.sap_id)
     #
     #
     #
     # make_pdf()
-    filename = str(cv.sap_id)
+    destination = STATIC_ROOT
+    tmp_folder = mkdtemp()
+    os.chdir(tmp_folder) 
+    
+    f = open(f"{filename}.tex", "w")
+    f.write(final)
+    f.close()
+    
+    texfile, texfilename = mkstemp(dir=tmp_folder)
+    
+    os.write(texfile, render_to_string(f'{filename}.tex'))
+    os.close(texfile)
+    
+    call(['pdflatex', texfilename])
+    os.rename(texfilename + '.pdf', destination)
+    
+    os.remove(texfilename)
+    os.remove(texfilename + '.aux')
+    os.remove(texfilename + '.log')
+    os.rmdir(tmp_folder)
+    
+    fp = os.path.join( STATIC_ROOT, texfilename+'.pdf')
+    return FileResponse(open(fp, 'rb'), content_type='application/pdf')
     
     # cwd = os.getcwd()  # current working directory
     # stdir = STATIC_ROOT #os.path.join(cwd, "cvg\static\cvg")  # "test.tex") # static directory
     # fp = os.path.join(cwd, "cvg\static\cvg", f"{filename}.pdf")
     
-    os.chdir(STATIC_ROOT)
+    # os.chdir(STATIC_ROOT)
 
-    # try:
-    #     os.remove(f"{filename}.pdf")
-    # except:
-    #     pass
-    # finally:
-    #     print("reached here")
+    # # try:
+    # #     os.remove(f"{filename}.pdf")
+    # # except:
+    # #     pass
+    # # finally:
+    # #     print("reached here")
 
-    f = open(f"{filename}.tex", "w")
-    f.write(final)
-    f.close()
+    # f = open(f"{filename}.tex", "w")
+    # f.write(final)
+    # f.close()
 
-    subprocess.check_call(['pdflatex', '-interaction=nonstopmode', f'{filename}.tex'])
-    os.remove(f"{filename}.aux")
-    os.remove(f"{filename}.log")
-    os.remove(f"{filename}.out")
-    os.chdir(BASE_DIR)
+    # subprocess.check_call(['pdflatex', '-interaction=nonstopmode', f'{filename}.tex'])
+    # os.remove(f"{filename}.aux")
+    # os.remove(f"{filename}.log")
+    # os.remove(f"{filename}.out")
+    # os.chdir(BASE_DIR)
     
-    fp = os.path.join( STATIC_ROOT, f"{filename}.pdf")
-    return FileResponse(open(fp, 'rb'), content_type='application/pdf')
-    # return HttpResponse(f"{stdir}")
-    # return HttpResponse(filename+'k')
-
-    # cwd = os.getcwd()
-    # stdir = os.path.join(cwd, "generator\static\generator")#, "test.tex")
-    # fp = os.path.join(cwd, "generator\static\generator", "test.pdf")
-    # os.chdir(stdir)
-    # subprocess.check_call(['pdflatex', '-interaction=nonstopmode', 'test.tex'])
-    # os.remove("test.aux")
-    # os.remove("test.log")
-    # os.chdir(cwd)
-    #
+    # fp = os.path.join( STATIC_ROOT, f"{filename}.pdf")
     # return FileResponse(open(fp, 'rb'), content_type='application/pdf')
-    # # return HttpResponse(f"{stdir}")
-
-    # # filename = 'listing' + row['stockID'] + '.htm'
-    # def func():
-    #     dest_folder= os.path.abspath(os.getcwd())
-    #     # In a temporary folder, make a temporary file
-    #     tmp_folder = mkdtemp()
-    #     os.chdir(tmp_folder)
-    #     texfile, texfilename = mkstemp(dir=tmp_folder)
-    #     # Pass the TeX template through Django templating engine and into the temp file
-    #     os.write(texfile, render_to_string('tex/base.tex', {'var': 'whatever'}))
-    #     os.close(texfile)
-    #     # Compile the TeX file with PDFLaTeX
-    #     call(['pdflatex', texfilename])
-    #     # Move resulting PDF to a more permanent location
-    #     os.rename(texfilename + '.pdf', dest_folder)
-    #     # Remove intermediate files
-    #     os.remove(texfilename)
-    #     os.remove(texfilename + '.aux')
-    #     os.remove(texfilename + '.log')
-    #     os.rmdir(tmp_folder)
-    #     return os.path.join(dest_folder, texfilename + '.pdf')
-
-
-#
 
 
 # signup custom view
