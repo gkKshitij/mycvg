@@ -236,7 +236,7 @@ def cv_preview(request, pk):
     
     texfile, texfilename = mkstemp(dir=tmp_folder)
     
-    os.write(texfile, final)
+    os.write(texfile, (f'{filename}.tex'))
     os.close(texfile)
     
     call(['pdflatex', texfilename])
