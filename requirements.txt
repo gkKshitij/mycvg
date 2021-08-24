@@ -4,7 +4,7 @@
 asgiref
 attrs
 beautifulsoup4
-ca-certificates
+# ca-certificates
 certifi
 charset-normalizer
 data
@@ -23,7 +23,7 @@ idna
 intel-openmp
 jinja2
 latex
-libblas
+# libblas
 libcblas
 liblapack
 markupsafe
