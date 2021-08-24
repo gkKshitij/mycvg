@@ -1,14 +1,1 @@
-collection-latexsym
-collection-fullpage
-collection-titlesec
-collection-marvosym
-collection-color
-collection-verbatim
-collection-enumitem
-collection-hyperref
-collection-fancyhdr
-collection-babel
-collection-tabularx
-collection-fontawesome5
-collection-multicol
-collection-graphicx
+latexsym fullpage titlesec marvosym color verbatim enumitem hyperref fancyhdr babel tabularx fontawesome5 multicol graphicx
