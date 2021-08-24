@@ -224,6 +224,7 @@ def cv_preview(request, pk):
     #
     # make_pdf()
     filename = str(cv.sap_id)
+    
     cwd = os.getcwd()  # current working directory
     stdir = os.path.join(cwd, "cvg\static\cvg")  # "test.tex") # static directory
     fp = os.path.join(cwd, "cvg\static\cvg", f"{filename}.pdf")
@@ -243,6 +244,7 @@ def cv_preview(request, pk):
     subprocess.check_call(['pdflatex', '-interaction=nonstopmode', f'{filename}.tex'])
     os.remove(f"{filename}.aux")
     os.remove(f"{filename}.log")
+    os.remove(f"{filename}.out")
     os.chdir(cwd)
 
     return FileResponse(open(fp, 'rb'), content_type='application/pdf')
