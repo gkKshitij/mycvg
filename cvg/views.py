@@ -235,7 +235,7 @@ def cv_preview(request, pk):
     f.write(final)
     f.close()
     
-    texfilename = filename+".log"
+    texfilename = filename+".tex"
     
     # texfile, texfilename = mkstemp(dir=tmp_folder)
     
