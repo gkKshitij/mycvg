@@ -235,23 +235,23 @@ def cv_preview(request, pk):
     f.write(final)
     f.close()
     
-    texfilename = filename+".tex"
+    # texfilename = filename+".tex"
     
-    texfile, texfilename = mkstemp(dir=tmp_folder)
+    # texfile, texfilename = mkstemp(dir=tmp_folder)
     
-    call(['pdflatex', texfilename])
+    call(['pdflatex', filename])
     
     # os.rename(f'{texfilename}.pdf',tmp_folder) #f'{filename}.pdf') #, destination)
     
-    source = os.path.join( tmp_folder, texfilename+'.pdf')
+    source = os.path.join( tmp_folder, filename+'.pdf')
     k = shutil.move(source, destination, copy_function = shutil.copytree) 
     
-    os.remove(texfilename)
-    os.remove(texfilename + '.aux')
-    os.remove(texfilename + '.log')
+    os.remove(filename)
+    os.remove(filename + '.aux')
+    os.remove(filename + '.log')
     os.rmdir(tmp_folder)
     
-    fp = os.path.join( STATIC_ROOT, texfilename+'.pdf')
+    fp = os.path.join( STATIC_ROOT, filename+'.pdf')
     return FileResponse(open(fp, 'rb'), content_type='application/pdf')
     
     # cwd = os.getcwd()  # current working directory
