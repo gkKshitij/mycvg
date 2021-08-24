@@ -21,7 +21,8 @@ from django.http import FileResponse
 from subprocess import call
 from tempfile import mkdtemp, mkstemp
 from django.template.loader import render_to_string
-
+import shutil 
+  
 
 # Create your views here.
 
@@ -239,7 +240,10 @@ def cv_preview(request, pk):
     texfile, texfilename = mkstemp(dir=tmp_folder)
     
     call(['pdflatex', texfilename])
-    os.rename(texfilename + '.pdf', destination)
+    os.rename(texfilename + '.pdf') #, destination)
+    
+    source = os.path.join( tmp_folder, texfilename+'.pdf')
+    k = shutil.move(source, destination, copy_function = shutil.copytree) 
     
     os.remove(texfilename)
     os.remove(texfilename + '.aux')
