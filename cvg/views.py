@@ -240,7 +240,7 @@ def cv_preview(request, pk):
     # texfile, texfilename = mkstemp(dir=tmp_folder)
     
     call(['pdflatex', filename])
-    ff = open(r"texfilename", "r")
+    ff = open(texfilename, "r")
     
     k = os.listdir(tmp_folder)
     return HttpResponse(ff)
