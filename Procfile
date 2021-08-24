@@ -1,1 +1,1 @@
-web: gunicorn -w 2 --chdir mycvg.wsgi:application --reload --timeout 900
+web: gunicorn mycvg.wsgi
