@@ -2,6 +2,9 @@ from django.urls import path
 from . import views
 # from cvg.views import Edit_ad
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 app_name = 'cvg'
 
 urlpatterns = [
@@ -53,4 +56,4 @@ urlpatterns = [
     path('comment/<int:pk>/remove/', views.remove_comment, name='remove_comment'),
     path('comment/<int:pk>/approve/', views.comment_approve, name='approve_comment'),
 
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
