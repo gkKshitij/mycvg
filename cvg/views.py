@@ -240,7 +240,7 @@ def cv_preview(request, pk):
     texfile, texfilename = mkstemp(dir=tmp_folder)
     
     call(['pdflatex', texfilename])
-    os.rename(texfilename + '.pdf') #, destination)
+    os.rename(f'{texfilename}.pdf',f'{filename}.pdf') #, destination)
     
     source = os.path.join( tmp_folder, texfilename+'.pdf')
     k = shutil.move(source, destination, copy_function = shutil.copytree) 
