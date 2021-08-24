@@ -25,11 +25,11 @@ SECRET_KEY = 'django-insecure-vs_wtrki!^i3v*njd&bb!)@_0jmunus-n-av6gs#=)t@^e53@c
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
-DEBUG = os.environ.get(‘DEBUG_VALUE’)
+DEBUG = os.environ.get('DEBUG_VALUE') #‘’
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-ALLOWED_HOSTS = [‘mycvg.herokuapp.com’, ‘0.0.0.0’]
+ALLOWED_HOSTS = ['mycvg.herokuapp.com', '0.0.0.0']
 
 LOGIN_REDIRECT_URL = 'cvg:cv_list'
 

@@ -15,10 +15,11 @@ from .custom import *
 
 import os
 import subprocess
-from subprocess import call
 from django.http import FileResponse
-from tempfile import mkdtemp, mkstemp
-from django.template.loader import render_to_string
+
+# from subprocess import call
+# from tempfile import mkdtemp, mkstemp
+# from django.template.loader import render_to_string
 
 
 # Create your views here.

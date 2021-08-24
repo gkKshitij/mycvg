@@ -1,2 +1,2 @@
-export DEBUG_VALUE=”True”
+export DEBUG_VALUE="True"
 web: python manage.py runserver 0.0.0.0:5000
