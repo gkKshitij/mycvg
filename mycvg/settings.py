@@ -29,7 +29,7 @@ DEBUG = os.environ.get(‘DEBUG_VALUE’)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-ALLOWED_HOSTS = [‘smart-flight-search.herokuapp.com’, ‘0.0.0.0’]
+ALLOWED_HOSTS = [‘mycvg.herokuapp.com’, ‘0.0.0.0’]
 
 LOGIN_REDIRECT_URL = 'cvg:cv_list'
 
