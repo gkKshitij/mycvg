@@ -12,6 +12,7 @@ from .models import Academics, Cv, Comment, Skills, Extracurricular, Internships
 from .forms import Cvform, Commentform, UserForm, Academicsform, Skillsform, Extracurricularform, Internshipsform, \
     Projectsform, Rolesform
 from .custom import *
+from mycvg.settings import *
 
 import os
 import subprocess
@@ -226,10 +227,11 @@ def cv_preview(request, pk):
     # make_pdf()
     filename = str(cv.sap_id)
     
-    cwd = os.getcwd()  # current working directory
-    stdir = os.path.join(cwd, "cvg\static\cvg")  # "test.tex") # static directory
-    fp = os.path.join(cwd, "cvg\static\cvg", f"{filename}.pdf")
-    os.chdir(stdir)
+    # cwd = os.getcwd()  # current working directory
+    # stdir = STATIC_ROOT #os.path.join(cwd, "cvg\static\cvg")  # "test.tex") # static directory
+    # fp = os.path.join(cwd, "cvg\static\cvg", f"{filename}.pdf")
+    fp = os.path.join( STATIC_ROOT, f"{filename}.pdf")
+    os.chdir(STATIC_ROOT)
 
     # try:
     #     os.remove(f"{filename}.pdf")
@@ -246,7 +248,7 @@ def cv_preview(request, pk):
     os.remove(f"{filename}.aux")
     os.remove(f"{filename}.log")
     os.remove(f"{filename}.out")
-    os.chdir(cwd)
+    os.chdir(BASE_DIR)
 
     return FileResponse(open(fp, 'rb'), content_type='application/pdf')
     # return HttpResponse(f"{stdir}")
