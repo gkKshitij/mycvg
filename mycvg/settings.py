@@ -29,7 +29,8 @@ DEBUG = os.environ.get(‘DEBUG_VALUE’)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-ALLOWED_HOSTS = [‘mycvg.herokuapp.com’, ‘0.0.0.0’]
+
+ALLOWED_HOSTS = ['']
 
 LOGIN_REDIRECT_URL = 'cvg:cv_list'
 

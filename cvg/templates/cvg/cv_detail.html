@@ -27,12 +27,13 @@
 </style>
 
     <div class="kontainer">
+      
 
         {% if user.is_authenticated and request.user == cv.created_by or user.is_superuser %}
         <a href="{% url 'cvg:cv_edit' pk=cv.pk %}" class="btn btn-primary"><i class="fa fa-pencil fa-2x"></i></a>
-
+          {% for ad in cv.academics.all %}
             <a href="{% url 'cvg:cv_preview' pk=cv.pk %}" class="btn btn-primary"><i class="fa fa-print fa-2x"></i></a>
-
+          {% endfor %}
         <a href="{% url 'cvg:delete_cv' pk=cv.pk %}" class="btn btn-danger"
         onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></a>
         {% endif %}

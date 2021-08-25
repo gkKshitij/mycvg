@@ -173,8 +173,11 @@ def cv_preview(request, pk):
     # cvs = Cv.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     final = sefunc('base', cdict)
 
-    sd = get_object_or_404(Skills, cv_id=dcv_id)
-    ed = get_object_or_404(Extracurricular, cv_id=dcv_id)
+    sd = Skills.objects.filter(cv_id=dcv_id)
+    ed = Extracurricular.objects.filter(cv_id=dcv_id)
+    
+    # sd = get_object_or_404(Skills, cv_id=dcv_id)
+    # ed = get_object_or_404(Extracurricular, cv_id=dcv_id) 
 
     # skill string maker
     if bool(sd):
@@ -226,8 +229,8 @@ def cv_preview(request, pk):
     filename = str(cv.sap_id)
     
     cwd = os.getcwd()  # current working directory
-    stdir = os.path.join(cwd, "cvg\static\cvg")  # "test.tex") # static directory
-    fp = os.path.join(cwd, "cvg\static\cvg", f"{filename}.pdf")
+    stdir = os.path.join(cwd, "cvg\static\cvg\custom")  # "test.tex") # static directory
+    fp = os.path.join(cwd, "cvg\static\cvg\custom", f"{filename}.pdf")
     os.chdir(stdir)
 
     # try:
@@ -241,49 +244,28 @@ def cv_preview(request, pk):
     f.write(final)
     f.close()
 
-    subprocess.check_call(['pdflatex', '-interaction=nonstopmode', f'{filename}.tex'])
+    try:
+       subprocess.check_call(['pdflatex', '-interaction=nonstopmode', f'{filename}.tex']) 
+
+    except :
+        # optional block
+        # Handling of exception (if required)
+        pass
+
+    else:
+        # execute if no exception
+        pass
+
+    finally:
+        # Some code .....(always executed)
+        pass
+    
     os.remove(f"{filename}.aux")
     os.remove(f"{filename}.log")
     os.remove(f"{filename}.out")
     os.chdir(cwd)
 
     return FileResponse(open(fp, 'rb'), content_type='application/pdf')
-    # return HttpResponse(f"{stdir}")
-    # return HttpResponse(filename+'k')
-
-    # cwd = os.getcwd()
-    # stdir = os.path.join(cwd, "generator\static\generator")#, "test.tex")
-    # fp = os.path.join(cwd, "generator\static\generator", "test.pdf")
-    # os.chdir(stdir)
-    # subprocess.check_call(['pdflatex', '-interaction=nonstopmode', 'test.tex'])
-    # os.remove("test.aux")
-    # os.remove("test.log")
-    # os.chdir(cwd)
-    #
-    # return FileResponse(open(fp, 'rb'), content_type='application/pdf')
-    # # return HttpResponse(f"{stdir}")
-
-    # # filename = 'listing' + row['stockID'] + '.htm'
-    # def func():
-    #     dest_folder= os.path.abspath(os.getcwd())
-    #     # In a temporary folder, make a temporary file
-    #     tmp_folder = mkdtemp()
-    #     os.chdir(tmp_folder)
-    #     texfile, texfilename = mkstemp(dir=tmp_folder)
-    #     # Pass the TeX template through Django templating engine and into the temp file
-    #     os.write(texfile, render_to_string('tex/base.tex', {'var': 'whatever'}))
-    #     os.close(texfile)
-    #     # Compile the TeX file with PDFLaTeX
-    #     call(['pdflatex', texfilename])
-    #     # Move resulting PDF to a more permanent location
-    #     os.rename(texfilename + '.pdf', dest_folder)
-    #     # Remove intermediate files
-    #     os.remove(texfilename)
-    #     os.remove(texfilename + '.aux')
-    #     os.remove(texfilename + '.log')
-    #     os.rmdir(tmp_folder)
-    #     return os.path.join(dest_folder, texfilename + '.pdf')
-
 
 #
 
@@ -292,19 +274,19 @@ def cv_preview(request, pk):
 def signup(request):
     if request.user.is_authenticated:
         return redirect('cvg:cv_list')
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            new_user = User.objects.create_user(**form.cleaned_data)
+            login(request, new_user)
+            return redirect('cvg:cv_list')
     else:
-        if request.method == 'POST':
-            form = UserForm(request.POST)
-            if form.is_valid():
-                new_user = User.objects.create_user(**form.cleaned_data)
-                login(request, new_user)
-                return redirect('cvg:cv_list')
-        else:
-            form = UserForm()
-        return render(request, 'cvg/signup.html', {'form': form})
+        form = UserForm()
+    return render(request, 'cvg/signup.html', {'form': form})
 
 
 # Home
+@login_required
 def cv_list(request):
     cvs = Cv.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     context = {'cvs': cvs}
@@ -312,6 +294,7 @@ def cv_list(request):
 
 
 # s1-step1 takes to details of cv
+@login_required
 def cv_detail(request, pk):
     cv = get_object_or_404(Cv, pk=pk)
     context = {'cv': cv}
@@ -334,7 +317,7 @@ def cv_new(request):
                 cvd.save()
                 return redirect('cvg:cv_detail', pk=cvd.pk)
             except:
-                return HttpResponse("Please maintain only one Cv")
+                return HttpResponse("Please maintain only one CV atleast for now, might be included in future update")
                 # TODO: make this later          
     else:
         form = Cvform()

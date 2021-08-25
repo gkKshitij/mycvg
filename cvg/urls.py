@@ -7,7 +7,7 @@ app_name = 'cvg'
 urlpatterns = [
     path('', views.cv_list, name='cv_list'),
     path('cv/<int:pk>/', views.cv_detail, name='cv_detail'),
-    path('cv/<int:pk>/preview', views.cv_preview, name='cv_preview'),
+    path('cv/<int:pk>/preview/', views.cv_preview, name='cv_preview'),
     
     # path('cv/<int:pk>/edit/', Cv_new.as_view(), name='cv_new'),
     path('cv/new/', views.cv_new, name='cv_new'),

@@ -21,7 +21,7 @@ from cvg import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('polls/', include('polls.urls')),
-    path('cvg/', include('cvg.urls')),
+    path('', include('cvg.urls')),
     
     path('accounts/', include('django.contrib.auth.urls')),
     # path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
