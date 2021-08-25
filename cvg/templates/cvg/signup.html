@@ -1,0 +1,41 @@
+{% extends 'cvg/base.html' %}
+
+{% block title %}Signup{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h6 style="text-align:center; font-family: sans-serif"> Please enter relevant details to make an account </h6>
+
+<div class="panel panel-default" style="width: 400px; margin:0 auto">
+{#    <div class="panel-body">#}
+{#        {% crispy form %}#}
+{#    </div>#}
+
+    <form method="POST" action="{% url 'signup' %}">
+    {% csrf_token %}
+    <table>
+      <tr>
+        <td>SAP ID </td>
+        <!-- {{ form.username.label_tag }} -->
+        <td>{{ form.username }}</td>
+      </tr>
+      <tr>
+        <td>{{ form.password.label_tag }}</td>
+        <td>{{ form.password }}</td>
+      </tr>
+      <tr>
+        <td>{{ form.email.label_tag }}</td>
+        <td>{{ form.email }}</td>
+      </tr>
+    </table>
+        <br>
+    <!-- <input type="submit" value="Login"  /> -->
+    <input type="hidden" name="next" value="{{ next }}" />
+    <button type="submit" class="btn btn-primary">Signup</button>
+  </form>
+
+    <br>
+</div>
+
+{% endblock %}
