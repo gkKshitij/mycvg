@@ -173,8 +173,11 @@ def cv_preview(request, pk):
     # cvs = Cv.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     final = sefunc('base', cdict)
 
-    sd = get_object_or_404(Skills, cv_id=dcv_id)
-    ed = get_object_or_404(Extracurricular, cv_id=dcv_id)
+    sd = Skills.objects.filter(cv_id=dcv_id)
+    ed = Extracurricular.objects.filter(cv_id=dcv_id)
+    
+    # sd = get_object_or_404(Skills, cv_id=dcv_id)
+    # ed = get_object_or_404(Extracurricular, cv_id=dcv_id) 
 
     # skill string maker
     if bool(sd):
@@ -241,7 +244,22 @@ def cv_preview(request, pk):
     f.write(final)
     f.close()
 
-    subprocess.check_call(['pdflatex', '-interaction=nonstopmode', f'{filename}.tex'])
+    try:
+       subprocess.check_call(['pdflatex', '-interaction=nonstopmode', f'{filename}.tex']) 
+
+    except :
+        # optional block
+        # Handling of exception (if required)
+        pass
+
+    else:
+        # execute if no exception
+        pass
+
+    finally:
+        # Some code .....(always executed)
+        pass
+    
     os.remove(f"{filename}.aux")
     os.remove(f"{filename}.log")
     os.remove(f"{filename}.out")
