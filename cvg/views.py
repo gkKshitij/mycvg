@@ -268,6 +268,7 @@ def signup(request):
 
 
 # Home
+@login_required
 def cv_list(request):
     cvs = Cv.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     context = {'cvs': cvs}
@@ -275,6 +276,7 @@ def cv_list(request):
 
 
 # s1-step1 takes to details of cv
+@login_required
 def cv_detail(request, pk):
     cv = get_object_or_404(Cv, pk=pk)
     context = {'cv': cv}
@@ -297,7 +299,7 @@ def cv_new(request):
                 cvd.save()
                 return redirect('cvg:cv_detail', pk=cvd.pk)
             except:
-                return HttpResponse("Please maintain only one Cv")
+                return HttpResponse("Please maintain only one CV atleast for now, might be included in future update")
                 # TODO: make this later          
     else:
         form = Cvform()
